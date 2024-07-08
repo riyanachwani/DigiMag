@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "51162743754",
+    "project_id": "digimag-b7aa0",
+    "storage_bucket": "digimag-b7aa0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51162743754:android:d5b53a443b89d5aa350533",
+        "android_client_info": {
+          "package_name": "com.example.digimag"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEd8Vzijz_Ek7KGMOHt68BzejxMpACpEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
