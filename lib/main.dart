@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'utils/routes.dart';
 import 'package:provider/provider.dart';
-import 'pages/login.dart';
-import 'pages/signup.dart';
+import 'pages/register.dart';
+import 'pages/signin.dart';
 import 'pages/homepage.dart';
 
 void main() {
@@ -38,8 +38,8 @@ class MyApp extends StatelessWidget {
             routes: {
               "/": (context) => LandingPage(),
               MyRoutes.homeRoute: (context) => const HomePage(),
-              MyRoutes.loginRoute: (context) => const LoginPage(),
-              MyRoutes.singupRoute: (context) => const SignupPage(),
+              MyRoutes.registerRoute: (context) => const RegisterPage(),
+              MyRoutes.singinRoute: (context) => const SigninPage(),
               MyRoutes.landingRoute: (context) => const LandingPage(),
             },
           );
