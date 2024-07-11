@@ -12,7 +12,20 @@
           "package_name": "com.example.digimag"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "51162743754-3gdotm7voatedlm3vt0psjif0p3urhvg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.digimag",
+            "certificate_hash": "34ff91d40b7dae9e602baea1b09712246c78092b"
+          }
+        },
+        {
+          "client_id": "51162743754-2ua7hqeof1njeq9oi7mcp83897etj5oc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDEd8Vzijz_Ek7KGMOHt68BzejxMpACpEU"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "51162743754-2ua7hqeof1njeq9oi7mcp83897etj5oc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

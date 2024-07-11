@@ -1,14 +1,18 @@
 import 'dart:ui';
-
 import 'package:digimag/main.dart';
 import 'package:digimag/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
 
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -17,7 +21,10 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("DigiMag"),
+        title: Text(
+          "DigiMag",
+          style: TextStyle(fontFamily: 'RosebayRegular'),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -60,10 +67,9 @@ class LandingPage extends StatelessWidget {
             ),
           ),
           // This Container holds the text below the image
-          SizedBox(height: 15), // Reduced space between title and description
+          SizedBox(height: 20), // Reduced space between title and description
 
           Container(
-            color: Colors.white,
             padding: EdgeInsets.symmetric(
                 horizontal: 20, vertical: 30), // Add padding to the container
             child: Column(
@@ -75,18 +81,18 @@ class LandingPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 35, // Adjusted font size for better fit
-                    color: Colors.black,
+                    fontSize: 30, // Adjusted font size for better fit
+
                     height: 1.2,
                   ),
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: 20),
                 Text(
                   "Your go-to source for the latest news and articles from around the world.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.normal, // Changed to normal weight
-                    fontSize: 20, // Adjusted font size for better readability
+                    fontSize: 18, // Adjusted font size for better readability
                     color: Colors.grey,
                     height: 1.5,
                   ),
@@ -95,59 +101,82 @@ class LandingPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Container(
-                      height: size.height * 0.08,
-                      width: size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Color.fromARGB(255, 217, 205, 237)
-                              .withOpacity(0.9),
-                          border: Border.all(color: Colors.white),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12.withOpacity(0.05),
-                              spreadRadius: 1,
-                              blurRadius: 1,
-                              offset: const Offset(0, -1),
+                    height: size.height * 0.08,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color:
+                          Color.fromARGB(255, 217, 205, 237).withOpacity(0.9),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12.withOpacity(0.05),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(0, -1),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushReplacementNamed(
+                                  context, MyRoutes.registerRoute);
+                            },
+                            borderRadius: BorderRadius.circular(15),
+                            splashColor: Colors.black,
+                            highlightColor: Colors.black,
+                            child: Container(
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Register",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ]),
-                      child: Padding(
-                          padding: EdgeInsets.only(right: 5),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: size.height * 0.08,
-                                width: size.width / 2.2,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.white),
-                                ),
-                                child: Center(
-                                  child: Text("Register",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Colors.black,
-                                      )),
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushReplacementNamed(
+                                  context, MyRoutes.signinRoute);
+                            },
+                            borderRadius: BorderRadius.circular(15),
+                            splashColor: Colors.black,
+                            highlightColor: Colors.black,
+                            child: Container(
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Sign In",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
-                              const Spacer(),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, MyRoutes.singinRoute);
-                                },
-                                child: Text("Sign In",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                    )),
-                              ),
-                              const Spacer(),
-                            ],
-                          ))),
-                ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),

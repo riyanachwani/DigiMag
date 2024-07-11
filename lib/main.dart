@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
               "/": (context) => LandingPage(),
               MyRoutes.homeRoute: (context) => const HomePage(),
               MyRoutes.registerRoute: (context) => const RegisterPage(),
-              MyRoutes.singinRoute: (context) => const SigninPage(),
+              MyRoutes.signinRoute: (context) => const SigninPage(),
               MyRoutes.landingRoute: (context) => const LandingPage(),
             },
           );
