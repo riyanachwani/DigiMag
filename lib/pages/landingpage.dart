@@ -21,6 +21,7 @@ class _LandingPageState extends State<LandingPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: Colors.white,
         title: Text(
           "DigiMag",
           style: TextStyle(fontFamily: 'RosebayRegular'),
@@ -93,7 +94,7 @@ class _LandingPageState extends State<LandingPage> {
                   style: TextStyle(
                     fontWeight: FontWeight.normal, // Changed to normal weight
                     fontSize: 18, // Adjusted font size for better readability
-                    color: Colors.grey,
+                    color: const Color.fromARGB(255, 122, 122, 122),
                     height: 1.5,
                   ),
                 ),

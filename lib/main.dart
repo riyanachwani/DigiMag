@@ -1,3 +1,4 @@
+import 'package:digimag/pages/forgotpassword.dart';
 import 'package:digimag/pages/landingpage.dart';
 import 'package:digimag/widgets/themes.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,13 @@ import 'pages/register.dart';
 import 'pages/signin.dart';
 import 'pages/homepage.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp().then((_) {
+    print("Firebase initialized successfully");
+  }).catchError((error) {
+    print("$error");
+  });
   runApp(const MyApp());
 }
 
@@ -41,6 +48,8 @@ class MyApp extends StatelessWidget {
               MyRoutes.registerRoute: (context) => const RegisterPage(),
               MyRoutes.signinRoute: (context) => const SigninPage(),
               MyRoutes.landingRoute: (context) => const LandingPage(),
+              MyRoutes.forgotpasswordRoute: (context) => const ForgotPasswordPage(),
+
             },
           );
         }));

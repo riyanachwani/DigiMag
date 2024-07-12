@@ -6,7 +6,7 @@ class MyTheme {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         fontFamily: GoogleFonts.arOneSans().fontFamily,
         appBarTheme: AppBarTheme(
-          color: Colors.white,
+          color: Color.fromARGB(125, 209, 191, 239),
           elevation: 0.0,
           iconTheme: IconThemeData(color: Colors.black),
           foregroundColor: Colors.black,
