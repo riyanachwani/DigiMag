@@ -41,15 +41,15 @@ class MyApp extends StatelessWidget {
             theme: MyTheme.lightTheme(context),
             darkTheme: MyTheme.darkTheme(context),
             debugShowCheckedModeBanner: false,
-            initialRoute: MyRoutes.landingRoute,
+            initialRoute: MyRoutes.signinRoute,
             routes: {
               "/": (context) => LandingPage(),
               MyRoutes.homeRoute: (context) => const HomePage(),
               MyRoutes.registerRoute: (context) => const RegisterPage(),
               MyRoutes.signinRoute: (context) => const SigninPage(),
               MyRoutes.landingRoute: (context) => const LandingPage(),
-              MyRoutes.forgotpasswordRoute: (context) => const ForgotPasswordPage(),
-
+              MyRoutes.forgotpasswordRoute: (context) =>
+                  const ForgotPasswordPage(),
             },
           );
         }));
