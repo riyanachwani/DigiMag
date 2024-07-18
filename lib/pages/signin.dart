@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digimag/main.dart';
-import 'package:digimag/utils/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/routes.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
@@ -18,11 +18,12 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
-  final _formKey = GlobalKey<FormState>();
+  bool _isPasswordVisible = false;
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoggedIn = false;
-  bool _isPasswordVisible = false;
+  final _formKey = GlobalKey<FormState>();
 
   Future<void> _saveLoginStatus(bool isLoggedIn) async {
     final prefs = await SharedPreferences.getInstance();
@@ -137,34 +138,37 @@ class _SigninPageState extends State<SigninPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final themeModel = Provider.of<ThemeModel>(context);
-    return SingleChildScrollView(
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("DigiMag",
-              style: TextStyle(
-                fontFamily: "RosebayRegular",
-              )),
-          actions: [
-            IconButton(
-              onPressed: () {
-                themeModel.toggleTheme();
-              },
-              icon: Icon(
-                themeModel.mode == ThemeMode.light
-                    ? Icons.dark_mode
-                    : Icons.light_mode,
-              ),
-            )
-          ],
+
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "DigiMag",
+          style: TextStyle(fontFamily: 'RosebayRegular'),
         ),
-        body: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        actions: [
+          IconButton(
+            onPressed: () {
+              themeModel.toggleTheme();
+            },
+            icon: Icon(
+              themeModel.mode == ThemeMode.light
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
+            ),
+          )
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Color.fromARGB(125, 209, 191, 239), Colors.white],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter)),
+              gradient: LinearGradient(
+                colors: [Color.fromARGB(125, 209, 191, 239), Colors.white],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
             child: SafeArea(
               child: Form(
                   key: _formKey,
@@ -176,7 +180,8 @@ class _SigninPageState extends State<SigninPage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 30,
+                          fontSize: 30, // Adjusted font size for better fit
+
                           height: 1.2,
                         ),
                       ),
@@ -185,8 +190,11 @@ class _SigninPageState extends State<SigninPage> {
                         "Your go-to source for the latest news and articles from around the world.",
                         textAlign: TextAlign.center,
                         style: TextStyle(
+                          fontWeight:
+                              FontWeight.normal, // Changed to normal weight
+                          fontSize:
+                              18, // Adjusted font size for better readability
                           color: const Color.fromARGB(255, 122, 122, 122),
-                          fontSize: 18,
                           height: 1.5,
                         ),
                       ),
@@ -238,7 +246,9 @@ class _SigninPageState extends State<SigninPage> {
                             ],
                           ),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              moveToLogin(context);
+                            },
                             borderRadius: BorderRadius.circular(15),
                             splashColor: Colors.black,
                             highlightColor: Colors.black,
