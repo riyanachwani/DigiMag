@@ -307,7 +307,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         children: [
                           InkWell(
                             onTap: () {
-                              GoogleRegister(); // Call the GoogleSignin function when tapped
+                              GoogleRegister(); 
                             },
                             borderRadius: BorderRadius.circular(15),
                             child: Container(
