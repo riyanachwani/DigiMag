@@ -14,10 +14,10 @@ class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
 
   @override
-  State<SigninPage> createState() => _SigninPageState();
+  State<SigninPage> createState() => SigninPageState();
 }
 
-class _SigninPageState extends State<SigninPage> {
+class SigninPageState extends State<SigninPage> {
   bool _isPasswordVisible = false;
 
   final _emailController = TextEditingController();
@@ -161,207 +161,197 @@ class _SigninPageState extends State<SigninPage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color.fromARGB(125, 209, 191, 239), Colors.white],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color.fromARGB(125, 209, 191, 239), Colors.white],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
-            child: SafeArea(
-              child: Form(
-                  key: _formKey,
-                  child: ListView(
-                    children: [
-                      SizedBox(height: size.height * 0.03),
-                      Text(
-                        "Welcome to DigiMag",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30, // Adjusted font size for better fit
-
-                          height: 1.2,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        "Your go-to source for the latest news and articles from around the world.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight:
-                              FontWeight.normal, // Changed to normal weight
-                          fontSize:
-                              18, // Adjusted font size for better readability
-                          color: const Color.fromARGB(255, 122, 122, 122),
-                          height: 1.5,
-                        ),
-                      ),
-                      SizedBox(height: size.height * 0.04),
-                      myTextField("Enter Email"),
-                      myPasswordField("Enter Password"),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 18.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context,
-                                    MyRoutes
-                                        .forgotpasswordRoute); // Navigate to Forgot Password route
-                              },
-                              child: Text(
-                                "Forgot Password",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: size.height * 0.04),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Container(
-                          height: size.height * 0.08,
-                          width: size.width,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Color.fromARGB(255, 217, 205, 237),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12.withOpacity(0.05),
-                                spreadRadius: 1,
-                                blurRadius: 1,
-                                offset: Offset(0, -1),
-                              ),
-                            ],
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              moveToLogin(context);
-                            },
-                            borderRadius: BorderRadius.circular(15),
-                            splashColor: Colors.black,
-                            highlightColor: Colors.black,
-                            child: Container(
-                              height: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Register",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ),
+          ),
+          child: SafeArea(
+            child: Column(
+              children: [
+                SizedBox(height: size.height * 0.03),
+                Text(
+                  "Welcome to DigiMag",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    height: 1.2,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "Your go-to source for the latest news and articles from around the world.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 18,
+                    color: const Color.fromARGB(255, 122, 122, 122),
+                    height: 1.5,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.04),
+                myTextField("Enter Email"),
+                myPasswordField("Enter Password"),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 18.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, MyRoutes.forgotpasswordRoute);
+                        },
+                        child: Text(
+                          "Forgot Password",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.grey,
                           ),
                         ),
                       ),
-                      SizedBox(height: size.height * 0.04),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 2,
-                            width: size.width * 0.2,
-                            color: Colors.black,
-                          ),
-                          SizedBox(
-                              width:
-                                  10), // Add some space between the line and the text
-                          Text(
-                            "Or continue with",
+                    ),
+                  ],
+                ),
+                SizedBox(height: size.height * 0.04),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Container(
+                    height: size.height * 0.08,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Color.fromARGB(255, 217, 205, 237),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12.withOpacity(0.05),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(0, -1),
+                        ),
+                      ],
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        moveToLogin(context);
+                      },
+                      borderRadius: BorderRadius.circular(15),
+                      splashColor: Colors.black,
+                      highlightColor: Colors.black,
+                      child: Container(
+                        height: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Register",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                              fontSize: 16,
+                              fontSize: 20,
+                              color: Colors.black,
                             ),
-                          ),
-                          SizedBox(
-                              width:
-                                  10), // Add some space between the text and the line
-                          Container(
-                            height: 2,
-                            width: size.width * 0.2,
-                            color: Colors.black,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: size.height * 0.04),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              GoogleRegister();
-                            },
-                            borderRadius: BorderRadius.circular(15),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 32, vertical: 15),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 2,
-                                ),
-                              ),
-                              child: Image.asset(
-                                "assets/images/google.png",
-                                height: 35,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: size.height * 0.04),
-                      Align(
-                        alignment: Alignment.center,
-                        child: RichText(
-                          text: TextSpan(
-                            text: "Already a member? ",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "Sign in now",
-                                style: TextStyle(
-                                  color: Colors.purple,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.pushReplacementNamed(
-                                      context,
-                                      MyRoutes.signinRoute,
-                                    );
-                                  },
-                              ),
-                            ],
                           ),
                         ),
-                      )
-                    ],
-                  )),
-            )),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.04),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 2,
+                      width: size.width * 0.2,
+                      color: Colors.black,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      "Or continue with",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Container(
+                      height: 2,
+                      width: size.width * 0.2,
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
+                SizedBox(height: size.height * 0.04),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        GoogleRegister();
+                      },
+                      borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 32, vertical: 15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 2,
+                          ),
+                        ),
+                        child: Image.asset(
+                          "assets/images/google.png",
+                          height: 35,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: size.height * 0.04),
+                Align(
+                  alignment: Alignment.center,
+                  child: RichText(
+                    text: TextSpan(
+                      text: "Already a member? ",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "Sign in now",
+                          style: TextStyle(
+                            color: Colors.purple,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                MyRoutes.signinRoute,
+                              );
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -402,7 +392,7 @@ class _SigninPageState extends State<SigninPage> {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: TextFormField(
         controller: _passwordController,
-        obscureText: !_isPasswordVisible, // Toggle visibility based on state
+        obscureText: !_isPasswordVisible,
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Please enter a password';
@@ -431,7 +421,7 @@ class _SigninPageState extends State<SigninPage> {
             ),
             onPressed: () {
               setState(() {
-                _isPasswordVisible = !_isPasswordVisible; // Toggle state
+                _isPasswordVisible = !_isPasswordVisible;
               });
             },
           ),
