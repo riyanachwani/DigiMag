@@ -1,7 +1,7 @@
 class MyRoutes {
-  static String dashboardRoute = '/dashboardpage';
-  static String signinRoute = '/singinage';
-  static String registerRoute = '/registerpage';
-  static String landingRoute = '/landingpage';
+  static String dashboardRoute = '/dashboard';
+  static String signinRoute = '/singin';
+  static String registerRoute = '/register';
+  static String landingRoute = '/landing';
   static String forgotpasswordRoute = '/forgotpassword';
 }
