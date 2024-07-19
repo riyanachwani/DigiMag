@@ -126,7 +126,7 @@ class _RegisterPageState extends State<RegisterPage> {
         if (user != null) {
           await _saveLoginStatus(true);
           Navigator.pushReplacementNamed(
-              context, MyRoutes.homeRoute); // Redirect to home page
+              context, MyRoutes.dashboardRoute); // Redirect to home page
         }
       }
     } catch (e) {

@@ -1,5 +1,5 @@
 class MyRoutes {
-  static String homeRoute = '/homepage';
+  static String dashboardRoute = '/dashboardpage';
   static String signinRoute = '/singinage';
   static String registerRoute = '/registerpage';
   static String landingRoute = '/landingpage';

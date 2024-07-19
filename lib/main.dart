@@ -7,7 +7,7 @@ import 'utils/routes.dart';
 import 'package:provider/provider.dart';
 import 'pages/register.dart';
 import 'pages/signin.dart';
-import 'pages/homepage.dart';
+import 'pages/dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
             initialRoute: MyRoutes.landingRoute,
             routes: {
               "/": (context) => LandingPage(),
-              MyRoutes.homeRoute: (context) => const HomePage(),
+              MyRoutes.dashboardRoute: (context) => const DashboardPage(),
               MyRoutes.registerRoute: (context) => const RegisterPage(),
               MyRoutes.signinRoute: (context) => const SigninPage(),
               MyRoutes.landingRoute: (context) => const LandingPage(),
