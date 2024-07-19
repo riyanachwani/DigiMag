@@ -1,6 +1,6 @@
 <h1 align="center">
   <a href="# DigiMag"></a>
-   DigiMag 📖
+   DigiMag 📔
 </h1>
 
 ## `Project Title`
