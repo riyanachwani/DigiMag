@@ -1,7 +1,7 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:digimag/main.dart';
 import 'package:flutter/material.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:digimag/main.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -13,37 +13,21 @@ class DashboardPage extends StatefulWidget {
 enum _SelectedTab { home, search, favorites, categories }
 
 class _DashboardPageState extends State<DashboardPage> {
-  _SelectedTab _selectedTab = _SelectedTab.home;
-
-  void _handleIndexChanged(int index) {
-    setState(() {
-      _selectedTab = _SelectedTab.values[index];
-      // Add navigation logic here
-    });
-  }
+  int _page = 0;
+  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final themeModel = Provider.of<ThemeModel>(context);
+
     final items = [
-      Icon(
-        Icons.home,
-        size: 30,
-      ),
-      Icon(
-        Icons.search,
-        size: 30,
-      ),
-      Icon(
-        Icons.favorite,
-        size: 30,
-      ),
-      Icon(
-        Icons.category_outlined,
-        size: 30,
-      ),
+      Icon(Icons.home, size: 30),
+      Icon(Icons.search, size: 30),
+      Icon(Icons.favorite, size: 30),
+      Icon(Icons.category_outlined, size: 30),
     ];
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -65,11 +49,37 @@ class _DashboardPageState extends State<DashboardPage> {
           )
         ],
       ),
-      body: Container(),
-      extendBody: true, // Replace with your body content
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.transparent,
-        items: items,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color.fromARGB(125, 209, 191, 239), Colors.white],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+          ),
+        ),
+      ),
+      extendBody: true,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(125, 209, 191, 239),
+              Colors.white,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: CurvedNavigationBar(
+          key: _bottomNavigationKey,
+          backgroundColor: Colors.transparent,
+          items: items,
+          onTap: (index) {
+            setState(() {
+              _page = index;
+            });
+          },
+        ),
       ),
     );
   }
