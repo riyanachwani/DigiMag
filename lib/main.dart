@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
             initialRoute: MyRoutes.landingRoute,
             routes: {
               "/": (context) => LandingPage(),
-              MyRoutes.dashboardRoute: (context) => const DashboardPage(),
+              MyRoutes.dashboardRoute: (context) =>const DashboardPage(),
               MyRoutes.registerRoute: (context) => const RegisterPage(),
               MyRoutes.signinRoute: (context) => const SigninPage(),
               MyRoutes.landingRoute: (context) => const LandingPage(),
