@@ -144,9 +144,19 @@ class _RegisterPageState extends State<RegisterPage> {
         // Perform post-sign-in actions, e.g., save user info or navigate
         User? user = userCredential.user;
 
-        print(user);
-
         if (user != null) {
+          // Get the user's information
+          String userName = user.displayName ?? "";
+          String userEmail = user.email ?? "";
+
+          // Save the user's information to Firestore
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .set({
+            'Name': userName,
+            'Email': userEmail,
+          });
           await _saveLoginStatus(true);
           Navigator.pushReplacementNamed(
               context, MyRoutes.dashboardRoute); // Redirect to home page
