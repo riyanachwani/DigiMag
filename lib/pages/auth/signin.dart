@@ -49,7 +49,7 @@ class _SigninPageState extends State<SigninPage> {
             ));
   }
 
-  void moveToLogin(BuildContext context) async {
+  void moveToDashboard(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       try {
         User? user = await register(
@@ -59,7 +59,7 @@ class _SigninPageState extends State<SigninPage> {
         );
         if (user != null) {
           await _saveLoginStatus(true);
-          Navigator.pushReplacementNamed(context, MyRoutes.signinRoute);
+          Navigator.pushReplacementNamed(context, MyRoutes.dashboardRoute);
         } else {
           _showAlertDialog("Error in Registering. Try Again");
         }
@@ -237,7 +237,7 @@ class _SigninPageState extends State<SigninPage> {
                       ),
                       child: InkWell(
                         onTap: () {
-                          moveToLogin(context);
+                          moveToDashboard(context);
                         },
                         borderRadius: BorderRadius.circular(15),
                         splashColor: Colors.black,
@@ -249,7 +249,7 @@ class _SigninPageState extends State<SigninPage> {
                           ),
                           child: Center(
                             child: Text(
-                              "Register",
+                              "Sign in",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -336,7 +336,7 @@ class _SigninPageState extends State<SigninPage> {
                     alignment: Alignment.center,
                     child: RichText(
                       text: TextSpan(
-                        text: "Already have an account? ",
+                        text: "Don't have an account? ",
                         style: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.bold,
@@ -344,7 +344,7 @@ class _SigninPageState extends State<SigninPage> {
                         ),
                         children: [
                           TextSpan(
-                            text: "Sign in",
+                            text: "Register",
                             style: TextStyle(
                               color: Colors.purple,
                               fontWeight: FontWeight.bold,

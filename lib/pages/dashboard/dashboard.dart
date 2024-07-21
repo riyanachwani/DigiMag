@@ -21,7 +21,7 @@ class _DashboardPageState extends State<DashboardPage> {
     await FirebaseAuth.instance.signOut();
 
     // Navigate to the sign-in route
-    Navigator.pushReplacementNamed(context, MyRoutes.signinRoute);
+    Navigator.pushReplacementNamed(context, MyRoutes.landingRoute);
   }
 
   @override
