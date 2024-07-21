@@ -7,7 +7,6 @@ import 'package:digimag/pages/landingpage.dart';
 import 'package:digimag/widgets/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'utils/routes.dart';
 import 'package:provider/provider.dart';
 import 'pages/auth/register.dart';
@@ -15,7 +14,6 @@ import 'pages/auth/signin.dart';
 import 'pages/dashboard/dashboard.dart';
 
 void main() async {
-  await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().then((_) {
     print("Firebase initialized successfully");

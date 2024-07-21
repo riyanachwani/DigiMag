@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   final String _baseUrl = 'https://api.currentsapi.services/v1';
-  final String _apiKey = dotenv.env['CURRENT_API_KEY'] ?? '';
+  final String _apiKey = 'ERWgn-WLm_yU3ODbxCU3O7mN8VQNeA-J3oeDXIxaVktc3gWf';
 
   Future<List<String>> getAvailableCategories() async {
     final response = await http.get(
