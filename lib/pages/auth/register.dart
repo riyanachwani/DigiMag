@@ -122,8 +122,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> GoogleRegister() async {
     try {
-      // Trigger the Google Sign-In process
       final GoogleSignIn googleSignIn = GoogleSignIn();
+
+      // Sign out from Google SignIn if a user is already signed in
+      await googleSignIn.signOut();
+
+      // Trigger the Google Sign-In process
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       if (googleUser != null) {

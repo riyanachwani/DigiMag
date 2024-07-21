@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:digimag/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -16,12 +17,16 @@ class _DashboardPageState extends State<DashboardPage> {
   int _page = 0;
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
-  void _logout() async {
-    // Sign out from Firebase
-    await FirebaseAuth.instance.signOut();
+  Future<void> _logout() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    await auth.signOut();
+    await _saveLoginStatus(false); // Set login status to false
+    Navigator.of(context).pushReplacementNamed(MyRoutes.landingRoute);
+  }
 
-    // Navigate to the sign-in route
-    Navigator.pushReplacementNamed(context, MyRoutes.landingRoute);
+  Future<void> _saveLoginStatus(bool isLoggedIn) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', isLoggedIn);
   }
 
   @override
