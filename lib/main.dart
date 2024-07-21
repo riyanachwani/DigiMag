@@ -1,4 +1,8 @@
 import 'package:digimag/pages/auth/forgotpassword.dart';
+import 'package:digimag/pages/dashboard/categories.dart';
+import 'package:digimag/pages/dashboard/favorites.dart';
+import 'package:digimag/pages/dashboard/home.dart';
+import 'package:digimag/pages/dashboard/search.dart';
 import 'package:digimag/pages/landingpage.dart';
 import 'package:digimag/widgets/themes.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +54,11 @@ class MyApp extends StatelessWidget {
               MyRoutes.landingRoute: (context) => const LandingPage(),
               MyRoutes.forgotpasswordRoute: (context) =>
                   const ForgotPasswordPage(),
+              MyRoutes.HomeRoute: (context) => const HomePage(),
+              MyRoutes.SearchRoute: (context) => const SearchPage(),
+              MyRoutes.CategoriesRoute: (context) => const CategoriesPage(),
+              MyRoutes.FavoriesRoute: (context) => const FavoritesPage(),
+              
             },
           );
         }));

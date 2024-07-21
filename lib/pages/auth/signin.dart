@@ -87,7 +87,7 @@ class _SigninPageState extends State<SigninPage> {
   }) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     try {
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -128,8 +128,6 @@ class _SigninPageState extends State<SigninPage> {
 
         // Perform post-sign-in actions, e.g., save user info or navigate
         User? user = userCredential.user;
-
-        print(user);
 
         if (user != null) {
           await _saveLoginStatus(true);
@@ -192,7 +190,7 @@ class _SigninPageState extends State<SigninPage> {
                       height: 1.2,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   Text(
                     "Your go-to source for the latest news and articles from around the world.",
                     textAlign: TextAlign.center,

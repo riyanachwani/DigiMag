@@ -19,16 +19,17 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   bool _isPasswordVisible = false;
-
+  bool isEmail = true;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
   bool _isLoggedIn = false;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _checkLoginStatus();
+    //_checkLoginStatus();
   }
 
   Future<void> _saveLoginStatus(bool isLoggedIn) async {
@@ -64,6 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (_formKey.currentState!.validate()) {
       try {
         User? user = await signInWithEmail(
+          name: _nameController.text,
           email: _emailController.text,
           password: _passwordController.text,
           context: context,
@@ -81,16 +83,27 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   static Future<User?> signInWithEmail({
+    required String name,
     required String email,
     required String password,
     required BuildContext context,
   }) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+// Get the newly created user's ID
+      String userId = userCredential.user!.uid;
+
+      // Create a new document in the 'users' collection with the user's ID
+      await FirebaseFirestore.instance.collection('users').doc(userId).set({
+        'Name': name,
+        'Email': email,
+      });
+
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -184,7 +197,6 @@ class _RegisterPageState extends State<RegisterPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  SizedBox(height: size.height * 0.03),
                   Text(
                     "Welcome to DigiMag",
                     textAlign: TextAlign.center,
@@ -194,7 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       height: 1.2,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   Text(
                     "Your go-to source for the latest news and articles from around the world.",
                     textAlign: TextAlign.center,
@@ -206,32 +218,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   SizedBox(height: size.height * 0.04),
-                  myTextField("Enter Email"),
+                  myTextField("Enter Name", _nameController),
+                  myTextField("Enter Email", _emailController,
+                      isEmail: isEmail),
                   myPasswordField("Enter Password"),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 18.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, MyRoutes.forgotpasswordRoute);
-                          },
-                          child: Text(
-                            "Forgot Password",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   SizedBox(height: size.height * 0.04),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
@@ -264,7 +254,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           child: Center(
                             child: Text(
-                              "Sign in",
+                              "Register",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -351,7 +341,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     alignment: Alignment.center,
                     child: RichText(
                       text: TextSpan(
-                        text: "Don't have an account? ",
+                        text: "Already have an account? ",
                         style: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.bold,
@@ -359,7 +349,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         children: [
                           TextSpan(
-                            text: "Register",
+                            text: "Sign in ",
                             style: TextStyle(
                               color: Colors.purple,
                               fontWeight: FontWeight.bold,
@@ -386,15 +376,17 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Container myTextField(String hintText) {
+  Container myTextField(String hintText, TextEditingController controller,
+      {bool isEmail = false}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: TextFormField(
-        controller: _emailController,
+        controller: controller,
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Please enter an email';
-          } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+            return 'Please enter ${isEmail ? 'an email' : 'a name'}';
+          } else if (isEmail &&
+              !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
             return 'Please enter a valid email';
           }
           return null;
