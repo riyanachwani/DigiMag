@@ -1,3 +1,7 @@
+import 'package:digimag/pages/dashboard/categories.dart';
+import 'package:digimag/pages/dashboard/favorites.dart';
+import 'package:digimag/pages/dashboard/home.dart';
+import 'package:digimag/pages/dashboard/search.dart';
 import 'package:digimag/utils/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +24,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Future<void> _logout() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     await auth.signOut();
-    await _saveLoginStatus(false); // Set login status to false
+    await _saveLoginStatus(false);
     Navigator.of(context).pushReplacementNamed(MyRoutes.landingRoute);
   }
 
@@ -36,14 +40,14 @@ class _DashboardPageState extends State<DashboardPage> {
     final iconColor = isDarkMode ? Colors.white : Colors.black;
 
     Color _getButtonBackgroundColor() {
-      return isDarkMode ? Colors.black : Colors.white;
+      return isDarkMode ? const Color.fromARGB(255, 94, 91, 91) : Colors.white;
     }
 
     final items = [
       Icon(Icons.home, size: 30, color: iconColor),
       Icon(Icons.search, size: 30, color: iconColor),
       Icon(Icons.favorite, size: 30, color: iconColor),
-      Icon(Icons.category_outlined, size: 30, color: iconColor),
+      Icon(Icons.category_rounded, size: 30, color: iconColor),
     ];
 
     return Scaffold(
@@ -66,26 +70,21 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ],
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color.fromARGB(125, 209, 191, 239), Colors.white],
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-          ),
-        ),
-        child: Center(
-          child: Text(
-            'Page $_page',
-          ),
-        ),
+      body: IndexedStack(
+        index: _page,
+        children: [
+          HomePage(),
+          SearchPage(),
+          FavoritesPage(),
+          CategoriesPage(),
+        ],
       ),
-      extendBody: true,
+      extendBody: false,
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
         backgroundColor: Colors.transparent,
-        color: Colors.purple.withOpacity(0.1), // Background color
-        buttonBackgroundColor: _getButtonBackgroundColor(), // Button color
+        color: Colors.purple.withOpacity(0.1),
+        buttonBackgroundColor: _getButtonBackgroundColor(),
         height: 60.0,
         items: items,
         onTap: (index) {
@@ -105,7 +104,7 @@ class _DashboardPageState extends State<DashboardPage> {
             children: <Widget>[
               DrawerHeader(
                 decoration: BoxDecoration(
-                  color: Colors.purple,
+                  color: Colors.purple.withOpacity(0.1),
                 ),
                 child: Text(
                   'Menu',
