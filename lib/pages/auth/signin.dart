@@ -8,16 +8,16 @@ import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../utils/routes.dart';
+import '../../utils/routes.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class SigninPage extends StatefulWidget {
+  const SigninPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<SigninPage> createState() => _SigninPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _SigninPageState extends State<SigninPage> {
   bool _isPasswordVisible = false;
 
   final _emailController = TextEditingController();
@@ -60,19 +60,19 @@ class _RegisterPageState extends State<RegisterPage> {
             ));
   }
 
-  void moveToDashboard(BuildContext context) async {
+  void moveToLogin(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       try {
-        User? user = await signInWithEmail(
+        User? user = await register(
           email: _emailController.text,
           password: _passwordController.text,
           context: context,
         );
         if (user != null) {
           await _saveLoginStatus(true);
-          Navigator.pushReplacementNamed(context, MyRoutes.dashboardRoute);
+          Navigator.pushReplacementNamed(context, MyRoutes.signinRoute);
         } else {
-          _showAlertDialog("Error in Signing In. Try Again");
+          _showAlertDialog("Error in Registering. Try Again");
         }
       } catch (e) {
         print("Error $e");
@@ -80,25 +80,23 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  static Future<User?> signInWithEmail({
+  static Future<User?> register({
     required String email,
     required String password,
     required BuildContext context,
   }) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print("No user found for that email.");
-      } else if (e.code == 'wrong-password') {
-        print("Wrong password provided for that user.");
+      if (e.code == 'email-already-in-use') {
+        print("Account with the same email already exists.");
       } else {
-        print("Error signing in. Check the email and password again.");
+        print("Error signing in-Check the email and password again.");
       }
       return null;
     } catch (e) {
@@ -252,7 +250,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       child: InkWell(
                         onTap: () {
-                          moveToDashboard(context);
+                          moveToLogin(context);
                         },
                         borderRadius: BorderRadius.circular(15),
                         splashColor: Colors.black,
@@ -264,7 +262,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           child: Center(
                             child: Text(
-                              "Sign in",
+                              "Register",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -351,7 +349,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     alignment: Alignment.center,
                     child: RichText(
                       text: TextSpan(
-                        text: "Don't have an account? ",
+                        text: "Already have an account? ",
                         style: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.bold,
@@ -359,7 +357,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         children: [
                           TextSpan(
-                            text: "Register",
+                            text: "Sign in",
                             style: TextStyle(
                               color: Colors.purple,
                               fontWeight: FontWeight.bold,

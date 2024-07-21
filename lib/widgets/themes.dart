@@ -17,7 +17,7 @@ class MyTheme {
         brightness: Brightness.dark,
         fontFamily: GoogleFonts.arOneSans().fontFamily,
         appBarTheme: AppBarTheme(
-          color: Color.fromARGB(113, 86, 83, 83),
+          color: Colors.black,
           elevation: 0.0,
           iconTheme: IconThemeData(color: Colors.white),
           foregroundColor: Colors.white,

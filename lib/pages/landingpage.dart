@@ -14,13 +14,12 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-
-   bool _isLoggedIn = false;
+  bool _isLoggedIn = false;
 
   @override
   void initState() {
     super.initState();
-    _checkLoginStatus();
+    // _checkLoginStatus();
   }
 
   Future<void> _checkLoginStatus() async {

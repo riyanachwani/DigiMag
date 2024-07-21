@@ -1,13 +1,13 @@
-import 'package:digimag/pages/forgotpassword.dart';
+import 'package:digimag/pages/auth/forgotpassword.dart';
 import 'package:digimag/pages/landingpage.dart';
 import 'package:digimag/widgets/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'utils/routes.dart';
 import 'package:provider/provider.dart';
-import 'pages/register.dart';
-import 'pages/signin.dart';
-import 'pages/dashboard.dart';
+import 'pages/auth/register.dart';
+import 'pages/auth/signin.dart';
+import 'pages/dashboard/dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
