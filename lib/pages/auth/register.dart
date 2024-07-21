@@ -227,7 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 18,
-                      color: const Color.fromARGB(255, 122, 122, 122),
+                      color: Color.fromARGB(255, 182, 180, 180),
                       height: 1.5,
                     ),
                   ),
@@ -373,7 +373,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ..onTap = () {
                                 Navigator.pushReplacementNamed(
                                   context,
-                                  MyRoutes.registerRoute,
+                                  MyRoutes.signinRoute,
                                 );
                               },
                           ),

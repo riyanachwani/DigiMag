@@ -186,7 +186,7 @@ class _SigninPageState extends State<SigninPage> {
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 18,
-                      color: const Color.fromARGB(255, 122, 122, 122),
+                      color: Color.fromARGB(255, 182, 180, 180),
                       height: 1.5,
                     ),
                   ),
@@ -210,7 +210,7 @@ class _SigninPageState extends State<SigninPage> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.grey,
+                              color: const Color.fromARGB(255, 122, 122, 122),
                             ),
                           ),
                         ),

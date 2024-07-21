@@ -40,7 +40,6 @@ class _LandingPageState extends State<LandingPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
         title: Text(
           "DigiMag",
           style: TextStyle(fontFamily: 'RosebayRegular'),
