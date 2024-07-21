@@ -1,3 +1,5 @@
+import 'package:digimag/utils/routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,14 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   int _page = 0;
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+
+  void _logout() async {
+    // Sign out from Firebase
+    await FirebaseAuth.instance.signOut();
+
+    // Navigate to the sign-in route
+    Navigator.pushReplacementNamed(context, MyRoutes.signinRoute);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +72,6 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Center(
           child: Text(
             'Page $_page',
-            textScaleFactor: 2.0,
           ),
         ),
       ),
@@ -82,6 +91,34 @@ class _DashboardPageState extends State<DashboardPage> {
         index: _page,
         animationDuration: Duration(milliseconds: 300),
         animationCurve: Curves.easeInOut,
+      ),
+      drawer: Drawer(
+        child: Container(
+          color: Colors.white,
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.purple,
+                ),
+                child: Text(
+                  'Menu',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text('Logout'),
+                leading: Icon(Icons.logout),
+                onTap: _logout,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

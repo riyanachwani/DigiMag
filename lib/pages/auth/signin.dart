@@ -28,22 +28,11 @@ class _SigninPageState extends State<SigninPage> {
   @override
   void initState() {
     super.initState();
-    _checkLoginStatus();
   }
 
   Future<void> _saveLoginStatus(bool isLoggedIn) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', isLoggedIn);
-  }
-
-  Future<void> _checkLoginStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-    });
-    if (_isLoggedIn) {
-      Navigator.pushReplacementNamed(context, MyRoutes.dashboardRoute);
-    }
   }
 
   void _showAlertDialog(String message) {

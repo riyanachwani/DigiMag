@@ -19,7 +19,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     super.initState();
-    // _checkLoginStatus();
+    _checkLoginStatus();
   }
 
   Future<void> _checkLoginStatus() async {

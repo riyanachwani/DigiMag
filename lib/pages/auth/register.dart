@@ -29,7 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-    //_checkLoginStatus();
+    _checkLoginStatus();
   }
 
   Future<void> _saveLoginStatus(bool isLoggedIn) async {
