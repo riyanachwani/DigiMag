@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
   final String _baseUrl = 'https://api.currentsapi.services/v1';
-  final String _apiKey =
-      'zT0QL-HiuIQ9BmzL-noAlC-IR1vbVXFNqvqnFIlPHMzYuVZ4'; // Your API key
+  final String _apiKey = dotenv.env['CURRENT_API_KEY'] ?? '';
 
   Future<List<String>> getAvailableCategories() async {
     final response = await http.get(
