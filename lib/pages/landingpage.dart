@@ -16,10 +16,20 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   bool _isLoggedIn = false;
-
   @override
   void initState() {
     super.initState();
+    _checkLoginStatus();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    });
+    if (_isLoggedIn) {
+      Navigator.pushReplacementNamed(context, MyRoutes.dashboardRoute);
+    }
   }
 
   @override

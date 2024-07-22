@@ -1,13 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:digimag/pages/dashboard/categories.dart';
 import 'package:digimag/pages/dashboard/drawer.dart';
 import 'package:digimag/pages/dashboard/favorites.dart';
 import 'package:digimag/pages/dashboard/home.dart';
 import 'package:digimag/pages/dashboard/search.dart';
 import 'package:digimag/utils/routes.dart';
-import 'package:digimag/utils/user_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:digimag/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,22 +22,6 @@ class _DashboardPageState extends State<DashboardPage> {
   int _page = 0;
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  Future<void> _logout() async {
-    await FirebaseAuth.instance.signOut();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', false); // Update SharedPreferences
-    Navigator.of(context).pushReplacementNamed(MyRoutes.landingRoute);
-  }
-
-  Future<void> _saveLoginStatus(bool isLoggedIn) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', isLoggedIn);
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -42,22 +42,12 @@ class _DrawerPageState extends State<DrawerPage> {
   }
 
   Future<void> _logout() async {
-    try {
-      // Sign out from Firebase
-      await FirebaseAuth.instance.signOut();
-
-      // Clear login status from SharedPreferences
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.remove('isLoggedIn');
-      await prefs.clear();
-
-      // Navigate to the landing page
-      Navigator.of(context).pushReplacementNamed(MyRoutes.landingRoute);
-    } catch (e) {
-      print("Error during logout: $e");
-      // Optionally handle the error, e.g., show an error message
-    }
+    await FirebaseAuth.instance.signOut();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false); // Update SharedPreferences
+    Navigator.of(context).pushReplacementNamed(MyRoutes.landingRoute);
   }
+
 
   @override
   Widget build(BuildContext context) {

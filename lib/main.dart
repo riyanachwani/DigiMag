@@ -21,7 +21,9 @@ void main() async {
   }).catchError((error) {
     print("$error");
   });
+  
   _checkDataFromSharedPreferences();
+  bool isLoggedIn = await _getLoginStatus();
   runApp(const MyApp());
 }
 
@@ -43,6 +45,11 @@ Future<void> _checkDataFromSharedPreferences() async {
 
   // Print or use the data.
   print('isLoggedIn: $isLoggedIn');
+}
+
+Future<bool> _getLoginStatus() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool('isLoggedIn') ?? false;
 }
 
 class MyApp extends StatelessWidget {
