@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digimag/utils/routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerPage extends StatefulWidget {
   const DrawerPage({Key? key}) : super(key: key);
@@ -41,8 +42,21 @@ class _DrawerPageState extends State<DrawerPage> {
   }
 
   Future<void> _logout() async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushReplacementNamed(MyRoutes.landingRoute);
+    try {
+      // Sign out from Firebase
+      await FirebaseAuth.instance.signOut();
+
+      // Clear login status from SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('isLoggedIn');
+      await prefs.clear();
+
+      // Navigate to the landing page
+      Navigator.of(context).pushReplacementNamed(MyRoutes.landingRoute);
+    } catch (e) {
+      print("Error during logout: $e");
+      // Optionally handle the error, e.g., show an error message
+    }
   }
 
   @override
@@ -55,11 +69,11 @@ class _DrawerPageState extends State<DrawerPage> {
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountName: Text(
-                _userInfo['name'] ?? 'Name',
+                _userInfo['Name'] ?? 'Name',
                 style: TextStyle(color: Colors.black),
               ),
               accountEmail: Text(
-                _userInfo['email'] ?? 'Email',
+                _userInfo['Email'] ?? 'Email',
                 style: TextStyle(color: Colors.black),
               ),
               decoration: BoxDecoration(

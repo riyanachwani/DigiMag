@@ -23,30 +23,15 @@ class _DashboardPageState extends State<DashboardPage> {
   int _page = 0;
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
-  // Map<String, String?> _userInfo = {'name': 'Name', 'email': 'Email'};
-
   @override
   void initState() {
     super.initState();
-    // _loadUserInfo();
   }
 
-  // Future<void> _loadUserInfo() async {
-  //   try {
-  //     UserService userService = UserService();
-  //     Map<String, String?> userInfo = await userService.getUserInfo();
-  //     setState(() {
-  //       _userInfo = userInfo;
-  //     });
-  //   } catch (e) {
-  //     print("Failed to load user info: $e");
-  //   }
-  // }
-
   Future<void> _logout() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    await auth.signOut();
-    await _saveLoginStatus(false);
+    await FirebaseAuth.instance.signOut();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false); // Update SharedPreferences
     Navigator.of(context).pushReplacementNamed(MyRoutes.landingRoute);
   }
 

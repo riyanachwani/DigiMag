@@ -7,54 +7,50 @@ class UserService {
 
   Future<Map<String, String?>> getUserInfo() async {
     User? user = _auth.currentUser;
-    if (user != null) {
-      DocumentSnapshot userDoc = await _firestore.collection('users').doc(user.uid).get();
-      String? name = userDoc['name'];
-      String? email = user.email;
-      return {'name': name, 'email': email};
-    } else {
+    if (user == null) {
+      print('No user logged in');
       throw Exception('No user logged in');
     }
+    DocumentSnapshot userDoc =
+        await _firestore.collection('users').doc(user.uid).get();
+    if (!userDoc.exists) {
+      print('User document does not exist');
+      throw Exception('User document does not exist');
+    }
+    String? name = userDoc['Name'];
+    String? email = user.email;
+    return {'Name': name, 'Email': email};
   }
 
   Future<Set<String>> getFavoriteCategories() async {
     User? user = _auth.currentUser;
-    if (user != null) {
-      DocumentReference userDocRef = _firestore.collection('users').doc(user.uid);
-      DocumentSnapshot userDoc = await userDocRef.get();
-
-      // Check if the document exists
-      if (!userDoc.exists) {
-        await userDocRef.set({
-          'Favorites': [], // Initialize with an empty list if the document doesn't exist
-        });
-        return {}; // Return an empty set if the document was newly created
-      }
-
-      // Safely access and check the 'favorites' field
-      var data = userDoc.data() as Map<String, dynamic>?;
-      if (data != null) {
-        List<dynamic>? favorites = data['Favorites'] as List<dynamic>?;
-        return favorites != null ? Set<String>.from(favorites) : {};
-      } else {
-        return {}; // Return an empty set if the data is null
-      }
-    } else {
+    if (user == null) {
+      print('No user logged in');
       throw Exception('No user logged in');
     }
+    DocumentReference userDocRef = _firestore.collection('users').doc(user.uid);
+    DocumentSnapshot userDoc = await userDocRef.get();
+    if (!userDoc.exists) {
+      await userDocRef.set({
+        'favorites':
+            [], // Initialize with an empty list if the document doesn't exist
+      });
+      return {}; // Return an empty set if the document was newly created
+    }
+    var data = userDoc.data() as Map<String, dynamic>?;
+    List<dynamic>? favorites = data?['favorites'] as List<dynamic>?;
+    return Set<String>.from(favorites ?? []);
   }
 
   Future<void> updateFavoriteCategories(Set<String> favorites) async {
     User? user = _auth.currentUser;
-    if (user != null) {
-      DocumentReference userDocRef = _firestore.collection('users').doc(user.uid);
-      
-      // Update or initialize the 'favorites' field
-      await userDocRef.set({
-        'favorites': favorites.toList(),
-      }, SetOptions(merge: true));
-    } else {
+    if (user == null) {
+      print('No user logged in');
       throw Exception('No user logged in');
     }
+    DocumentReference userDocRef = _firestore.collection('users').doc(user.uid);
+    await userDocRef.set({
+      'favorites': favorites.toList(),
+    }, SetOptions(merge: true));
   }
 }

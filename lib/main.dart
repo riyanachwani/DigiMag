@@ -7,6 +7,7 @@ import 'package:digimag/pages/landingpage.dart';
 import 'package:digimag/widgets/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'utils/routes.dart';
 import 'package:provider/provider.dart';
 import 'pages/auth/register.dart';
@@ -20,6 +21,7 @@ void main() async {
   }).catchError((error) {
     print("$error");
   });
+  _checkDataFromSharedPreferences();
   runApp(const MyApp());
 }
 
@@ -30,6 +32,17 @@ class ThemeModel extends ChangeNotifier {
     _mode = _mode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
+}
+
+Future<void> _checkDataFromSharedPreferences() async {
+  // Obtain shared preferences.
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  // Retrieve data.
+  bool? isLoggedIn = prefs.getBool('isLoggedIn');
+
+  // Print or use the data.
+  print('isLoggedIn: $isLoggedIn');
 }
 
 class MyApp extends StatelessWidget {
@@ -48,7 +61,7 @@ class MyApp extends StatelessWidget {
             initialRoute: MyRoutes.landingRoute,
             routes: {
               "/": (context) => LandingPage(),
-              MyRoutes.dashboardRoute: (context) =>const DashboardPage(),
+              MyRoutes.dashboardRoute: (context) => const DashboardPage(),
               MyRoutes.registerRoute: (context) => const RegisterPage(),
               MyRoutes.signinRoute: (context) => const SigninPage(),
               MyRoutes.landingRoute: (context) => const LandingPage(),
@@ -58,7 +71,6 @@ class MyApp extends StatelessWidget {
               MyRoutes.SearchRoute: (context) => const SearchPage(),
               MyRoutes.CategoriesRoute: (context) => const CategoriesPage(),
               MyRoutes.FavoriesRoute: (context) => const FavoritesPage(),
-              
             },
           );
         }));

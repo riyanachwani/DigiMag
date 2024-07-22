@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:digimag/main.dart';
 import 'package:digimag/utils/routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -19,17 +20,6 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     super.initState();
-    _checkLoginStatus();
-  }
-
-  Future<void> _checkLoginStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-    });
-    if (_isLoggedIn) {
-      Navigator.pushReplacementNamed(context, MyRoutes.dashboardRoute);
-    }
   }
 
   @override

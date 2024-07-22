@@ -124,46 +124,34 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();
 
-      // Sign out from Google SignIn if a user is already signed in
+      // Sign out of any existing session to ensure we start fresh
       await googleSignIn.signOut();
 
-      // Trigger the Google Sign-In process
+      // Proceed with sign in and account picker
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       if (googleUser != null) {
-        // Obtain the auth details from the request
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
-
-        // Create a new credential
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
 
-        // Sign in to Firebase with the Google credential
         final UserCredential userCredential =
             await FirebaseAuth.instance.signInWithCredential(credential);
-
-        // Perform post-sign-in actions, e.g., save user info or navigate
         User? user = userCredential.user;
 
         if (user != null) {
-          // Get the user's information
-          String userName = user.displayName ?? "";
-          String userEmail = user.email ?? "";
-
-          // Save the user's information to Firestore
           await FirebaseFirestore.instance
               .collection('users')
               .doc(user.uid)
               .set({
-            'Name': userName,
-            'Email': userEmail,
+            'Name': user.displayName ?? "",
+            'Email': user.email ?? "",
           });
-          await _saveLoginStatus(true);
-          Navigator.pushReplacementNamed(
-              context, MyRoutes.dashboardRoute); // Redirect to home page
+          await _saveLoginStatus(true); // Save login status
+          Navigator.pushReplacementNamed(context, MyRoutes.dashboardRoute);
         }
       }
     } catch (e) {
