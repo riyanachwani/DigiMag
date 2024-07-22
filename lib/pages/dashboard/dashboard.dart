@@ -1,8 +1,10 @@
 import 'package:digimag/pages/dashboard/categories.dart';
+import 'package:digimag/pages/dashboard/drawer.dart';
 import 'package:digimag/pages/dashboard/favorites.dart';
 import 'package:digimag/pages/dashboard/home.dart';
 import 'package:digimag/pages/dashboard/search.dart';
 import 'package:digimag/utils/routes.dart';
+import 'package:digimag/utils/user_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -20,6 +22,26 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   int _page = 0;
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+
+  Map<String, String?> _userInfo = {'name': 'Name', 'email': 'Email'};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserInfo();
+  }
+
+  Future<void> _loadUserInfo() async {
+    try {
+      UserService userService = UserService();
+      Map<String, String?> userInfo = await userService.getUserInfo();
+      setState(() {
+        _userInfo = userInfo;
+      });
+    } catch (e) {
+      print("Failed to load user info: $e");
+    }
+  }
 
   Future<void> _logout() async {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -96,34 +118,7 @@ class _DashboardPageState extends State<DashboardPage> {
         animationDuration: Duration(milliseconds: 300),
         animationCurve: Curves.easeInOut,
       ),
-      drawer: Drawer(
-        child: Container(
-          color: Colors.white,
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.purple.withOpacity(0.1),
-                ),
-                child: Text(
-                  'Menu',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text('Logout'),
-                leading: Icon(Icons.logout),
-                onTap: _logout,
-              ),
-            ],
-          ),
-        ),
-      ),
+      drawer: const DrawerPage(),
     );
   }
 }
