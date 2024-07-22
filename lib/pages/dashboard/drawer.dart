@@ -1,3 +1,4 @@
+import 'package:digimag/utils/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,10 @@ class DrawerPage extends StatefulWidget {
 }
 
 class _DrawerPageState extends State<DrawerPage> {
-  Map<String, String?> _userInfo = {'name': 'Name', 'email': 'Email'};
+  Map<String, String?> _userInfo = {
+    'name': 'Loading...',
+    'email': 'Loading...'
+  };
 
   @override
   void initState() {
@@ -21,20 +25,18 @@ class _DrawerPageState extends State<DrawerPage> {
 
   Future<void> _loadUserInfo() async {
     try {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
-        String? name = userDoc['name'];
-        String? email = user.email;
-        setState(() {
-          _userInfo = {'name': name, 'email': email};
-        });
-      }
+      final userInfo = await UserService().getUserInfo();
+      setState(() {
+        _userInfo = userInfo;
+      });
     } catch (e) {
       print("Failed to load user info: $e");
+      setState(() {
+        _userInfo = {
+          'name': 'Error loading name',
+          'email': 'Error loading email'
+        };
+      });
     }
   }
 
@@ -52,8 +54,14 @@ class _DrawerPageState extends State<DrawerPage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text(_userInfo['name'] ?? 'Name'),
-              accountEmail: Text(_userInfo['email'] ?? 'Email'),
+              accountName: Text(
+                _userInfo['name'] ?? 'Name',
+                style: TextStyle(color: Colors.black),
+              ),
+              accountEmail: Text(
+                _userInfo['email'] ?? 'Email',
+                style: TextStyle(color: Colors.black),
+              ),
               decoration: BoxDecoration(
                 color: Colors.purple.withOpacity(0.1),
               ),

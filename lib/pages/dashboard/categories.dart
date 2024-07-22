@@ -1,4 +1,5 @@
 import 'package:digimag/main.dart';
+import 'package:digimag/utils/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:digimag/utils/api_services.dart';
 import 'package:provider/provider.dart';
@@ -12,12 +13,19 @@ class CategoriesPage extends StatefulWidget {
 
 class _CategoriesPageState extends State<CategoriesPage> {
   late Future<List<String>> _categoriesFuture;
+  late Future<Set<String>> _favoritesFuture;
   Set<String> favorites = {};
 
   @override
   void initState() {
     super.initState();
     _categoriesFuture = ApiService().getAvailableCategories();
+    _favoritesFuture = UserService().getFavoriteCategories().then((fav) {
+      setState(() {
+        favorites = fav;
+      });
+      return fav;
+    });
   }
 
   String formatCategoryName(String categoryName) {
@@ -33,6 +41,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       } else {
         favorites.add(categoryName);
       }
+      UserService().updateFavoriteCategories(favorites);  // Update favorites in Firestore
     });
   }
 
@@ -41,6 +50,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     final themeModel = Provider.of<ThemeModel>(context);
     final isDarkMode = themeModel.mode == ThemeMode.dark;
     final tileShade = isDarkMode ? Colors.black : Colors.white;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -75,11 +85,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 elevation: 4.0,
                 child: ListTile(
                   contentPadding: EdgeInsets.all(16.0),
-                  // leading: CircleAvatar(
-                  //   backgroundImage: NetworkImage(
-                  //     "https://example.com/category_image.png", // Replace with a real URL or placeholder
-                  //   ),
-                  // ),
                   title: Text(
                     category,
                     style: TextStyle(fontWeight: FontWeight.bold),
