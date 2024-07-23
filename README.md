@@ -16,6 +16,7 @@ DigiMag is an advanced magazine app designed to keep users updated with the late
 - **Favorites Management:** Save and manage favorite articles and categories for quick access.
 - **Category Management:** Explore and manage different news categories according to your interests.
 - **Profile Management:** View and update user profile information and settings.
+- **Customizable Themes:** Switch between light and dark themes for a personalized reading experience. 
 
 ## `Prerequisites`
 Ensure you have:
