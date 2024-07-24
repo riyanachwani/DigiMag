@@ -29,7 +29,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
     try {
       final favoriteCategories = await userService.getFavoriteCategories();
       setState(() {
-        _favoriteCategories = favoriteCategories.toSet(); // Ensure it's a Set
+        print("Loaded favorites: $_favoriteCategories");
+        _favoriteCategories = favoriteCategories.toSet();
         _updateCategoryLists();
       });
     } catch (e) {
@@ -43,9 +44,19 @@ class _CategoriesPageState extends State<CategoriesPage> {
     });
     try {
       List<String> categories = await apiService.getAvailableCategories();
+
+      // Capitalize the first letter and lowercase the rest of each category
+      List<String> formattedCategories = categories.map((category) {
+        if (category.isEmpty) return category; // Handle empty strings
+        String formattedCategory =
+            category[0].toUpperCase() + category.substring(1).toLowerCase();
+        return formattedCategory;
+      }).toList();
+
       if (mounted) {
         setState(() {
-          _availableCategories = categories;
+          _availableCategories = formattedCategories;
+          print("\n\nLoaded available categories: $_availableCategories");
           _updateCategoryLists();
         });
       }
@@ -62,12 +73,17 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   void _updateCategoryLists() {
     setState(() {
-      _likedCategories = _availableCategories
-          .where((category) => _favoriteCategories.contains(category))
-          .toList();
+      _likedCategories = _favoriteCategories.toList();
+
+      // Capitalize the first letter and lowercase the rest for consistency
       _unlikedCategories = _availableCategories
           .where((category) => !_favoriteCategories.contains(category))
+          .map((category) =>
+              category[0].toUpperCase() + category.substring(1).toLowerCase())
           .toList();
+
+      print(
+          "\n\nUpdated category lists: liked: $_likedCategories, unliked: $_unlikedCategories");
     });
   }
 
@@ -79,15 +95,21 @@ class _CategoriesPageState extends State<CategoriesPage> {
         await userService.removeFavoriteCategory(formattedCategory);
         setState(() {
           _favoriteCategories.remove(formattedCategory);
-          _likedCategories.remove(formattedCategory); // Remove from liked
-          _unlikedCategories.add(formattedCategory); // Add to unliked
+          _likedCategories.remove(formattedCategory);
+          _unlikedCategories.add(formattedCategory);
+          print("Removed category from favorites: $formattedCategory");
+          print(
+              "Updated lists: liked: $_likedCategories, unliked: $_unlikedCategories");
         });
       } else {
         await userService.addFavoriteCategory(formattedCategory);
         setState(() {
           _favoriteCategories.add(formattedCategory);
-          _likedCategories.add(formattedCategory); // Add to liked
-          _unlikedCategories.remove(formattedCategory); // Remove from unliked
+          _likedCategories.add(formattedCategory);
+          _unlikedCategories.remove(formattedCategory);
+          print("Added category to favorites: $formattedCategory");
+          print(
+              "Updated lists: liked: $_likedCategories, unliked: $_unlikedCategories");
         });
       }
     } catch (e) {
