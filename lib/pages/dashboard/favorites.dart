@@ -1,111 +1,185 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:digimag/utils/user_services.dart';
-import 'package:digimag/main.dart';
+import 'package:digimag/utils/api_services.dart';
 
 class FavoritesPage extends StatefulWidget {
-  const FavoritesPage({super.key});
-
   @override
-  State<FavoritesPage> createState() => _FavoritesPageState();
+  _FavoritesPageState createState() => _FavoritesPageState();
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
-  late Future<Set<String>> _favoritesFuture;
+  Set<String> _favoriteCategories = {};
+  UserService userService = UserService();
+  ApiService apiService = ApiService();
+  List<String> _availableCategories = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _favoritesFuture = _loadFavorites();
+    _loadFavorites();
+    _loadAvailableCategories();
   }
 
-  Future<Set<String>> _loadFavorites() async {
+  Future<void> _loadFavorites() async {
     try {
-      return await UserService().getFavoriteCategories();
-    } catch (e) {
-      print('Error loading favorites: $e');
-      return {}; // Return an empty set in case of error
-    }
-  }
-
-  Future<void> _updateFavorites(String category) async {
-    try {
-      final Set<String> currentFavorites =
-          await UserService().getFavoriteCategories();
-      currentFavorites.remove(category);
-      await UserService().updateFavoriteCategories(currentFavorites);
+      Set<String> favorites = await userService.getFavoriteCategories();
       if (mounted) {
         setState(() {
-          _favoritesFuture = _loadFavorites(); // Reload the updated favorites
+          _favoriteCategories = favorites;
         });
       }
     } catch (e) {
-      print('Error updating favorites: $e');
+      print('Error loading favorites: $e');
+    }
+  }
+
+  Future<void> _loadAvailableCategories() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      List<String> categories = await apiService.getAvailableCategories();
+      if (mounted) {
+        setState(() {
+          _availableCategories = categories;
+        });
+      }
+    } catch (e) {
+      print('Error loading categories: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  String _capitalize(String text) {
+    if (text == null || text.isEmpty) {
+      return '';
+    }
+    return text[0].toUpperCase() + text.substring(1).toLowerCase();
+  }
+
+  Future<void> _addFavoriteCategory() async {
+    TextEditingController searchController = TextEditingController();
+    List<String> filteredCategories = _availableCategories;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Add Favorite Category'),
+          content: _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : SizedBox(
+                  width: double.maxFinite,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        controller: searchController,
+                        decoration:
+                            InputDecoration(hintText: 'Search categories'),
+                        onChanged: (value) {
+                          setState(() {
+                            filteredCategories = _availableCategories
+                                .where((category) => _capitalize(category)
+                                    .toLowerCase()
+                                    .contains(value.toLowerCase()))
+                                .toList();
+                          });
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: filteredCategories.length,
+                          itemBuilder: (context, index) {
+                            String category = filteredCategories[index];
+                            return ListTile(
+                              title: Text(_capitalize(category)),
+                              onTap: () async {
+                                try {
+                                  String formattedCategory =
+                                      _capitalize(category);
+                                  if (!_favoriteCategories
+                                      .contains(formattedCategory)) {
+                                    await userService
+                                        .addFavoriteCategory(formattedCategory);
+                                    if (mounted) {
+                                      setState(() {
+                                        _favoriteCategories
+                                            .add(formattedCategory);
+                                      });
+                                    }
+                                  }
+                                  Navigator.of(context).pop();
+                                } catch (e) {
+                                  print('Error adding category: $e');
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _removeFavoriteCategory(String category) async {
+    try {
+      String formattedCategory = _capitalize(category);
+      await userService.removeFavoriteCategory(formattedCategory);
+      if (mounted) {
+        setState(() {
+          _favoriteCategories.remove(formattedCategory);
+        });
+      }
+    } catch (e) {
+      print('Error removing category: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final themeModel = Provider.of<ThemeModel>(context);
-    final isDarkMode = themeModel.mode == ThemeMode.dark;
-    final tileShade = isDarkMode ? Colors.black : Colors.white;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Favorites",
-          style: TextStyle(fontFamily: "RosebayRegular", fontSize: 20),
-        ),
-        automaticallyImplyLeading: false,
+        title: Text('Favorite Categories'),
       ),
-      body: FutureBuilder<Set<String>>(
-        future: _favoritesFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No favorite categories available'));
-          }
-
-          final favorites = snapshot.data!.toList();
-          return ListView.builder(
-            itemCount: favorites.length,
-            itemBuilder: (context, index) {
-              final category = favorites[index];
-
-              return Card(
-                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 15.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                elevation: 4.0,
-                child: ListTile(
-                  contentPadding: EdgeInsets.all(16.0),
-                  title: Text(
-                    category,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+      body: _favoriteCategories.isEmpty
+          ? Center(child: Text('No favorite categories'))
+          : ListView.builder(
+              itemCount: _favoriteCategories.length,
+              itemBuilder: (context, index) {
+                String category = _favoriteCategories.elementAt(index);
+                return ListTile(
+                  title: Text(_capitalize(category)),
                   trailing: IconButton(
-                    icon: Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                    ),
-                    onPressed: () {
-                      // Avoid potential issues with the async method by handling it properly
-                      _updateFavorites(category);
-                    },
+                    icon: Icon(Icons.delete),
+                    onPressed: () => _removeFavoriteCategory(category),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  tileColor: tileShade,
-                ),
-              );
-            },
-          );
-        },
+                );
+              },
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addFavoriteCategory,
+        child: Icon(Icons.add),
       ),
     );
   }

@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
               MyRoutes.HomeRoute: (context) => const HomePage(),
               MyRoutes.SearchRoute: (context) => const SearchPage(),
               MyRoutes.CategoriesRoute: (context) => const CategoriesPage(),
-              MyRoutes.FavoriesRoute: (context) => const FavoritesPage(),
+              MyRoutes.FavoriesRoute: (context) => FavoritesPage(),
             },
           );
         }));

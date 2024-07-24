@@ -26,7 +26,8 @@ class UserService {
     User? user = _auth.currentUser;
     if (user == null) {
       print('No user logged in');
-      throw Exception('No user logged in');
+      return {};
+      //throw Exception('No user logged in');
     }
     DocumentReference userDocRef = _firestore.collection('users').doc(user.uid);
     DocumentSnapshot userDoc = await userDocRef.get();
@@ -52,5 +53,29 @@ class UserService {
     await userDocRef.set({
       'Favorites': favorites.toList(),
     }, SetOptions(merge: true));
+  }
+
+  Future<void> addFavoriteCategory(String category) async {
+    User? user = _auth.currentUser;
+    if (user == null) {
+      print('No user logged in');
+      return;
+    }
+    DocumentReference userDocRef = _firestore.collection('users').doc(user.uid);
+    await userDocRef.update({
+      'Favorites': FieldValue.arrayUnion([category]),
+    });
+  }
+
+  Future<void> removeFavoriteCategory(String category) async {
+    User? user = _auth.currentUser;
+    if (user == null) {
+      print('No user logged in');
+      return;
+    }
+    DocumentReference userDocRef = _firestore.collection('users').doc(user.uid);
+    await userDocRef.update({
+      'Favorites': FieldValue.arrayRemove([category]),
+    });
   }
 }
