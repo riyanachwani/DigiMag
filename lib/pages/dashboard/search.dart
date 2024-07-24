@@ -18,6 +18,19 @@ class _SearchPageState extends State<SearchPage> {
         ),
         automaticallyImplyLeading: false,
       ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextField(
+          decoration: InputDecoration(
+            prefixIcon: Icon(Icons.search),
+            hintText: 'Search Articles',
+            border: OutlineInputBorder(),
+          ),
+          onChanged: (value) {
+            setState(() {});
+          },
+        ),
+      ),
     );
   }
 }

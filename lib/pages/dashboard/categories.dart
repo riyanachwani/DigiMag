@@ -137,6 +137,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.search),
                       hintText: 'Search categories',
                       border: OutlineInputBorder(),
                     ),
@@ -186,7 +187,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(10.0),
           child: Text(
             title,
             style: TextStyle(
