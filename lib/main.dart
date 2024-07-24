@@ -23,7 +23,7 @@ void main() async {
   });
   
   _checkDataFromSharedPreferences();
-  bool isLoggedIn = await _getLoginStatus();
+  //bool isLoggedIn = await _getLoginStatus();
   runApp(const MyApp());
 }
 

@@ -32,13 +32,13 @@ class UserService {
     DocumentSnapshot userDoc = await userDocRef.get();
     if (!userDoc.exists) {
       await userDocRef.set({
-        'favorites':
+        'Favorites':
             [], // Initialize with an empty list if the document doesn't exist
       });
       return {}; // Return an empty set if the document was newly created
     }
     var data = userDoc.data() as Map<String, dynamic>?;
-    List<dynamic>? favorites = data?['favorites'] as List<dynamic>?;
+    List<dynamic>? favorites = data?['Favorites'] as List<dynamic>?;
     return Set<String>.from(favorites ?? []);
   }
 
@@ -50,7 +50,7 @@ class UserService {
     }
     DocumentReference userDocRef = _firestore.collection('users').doc(user.uid);
     await userDocRef.set({
-      'favorites': favorites.toList(),
+      'Favorites': favorites.toList(),
     }, SetOptions(merge: true));
   }
 }

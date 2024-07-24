@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:digimag/main.dart';
 import 'package:digimag/utils/routes.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

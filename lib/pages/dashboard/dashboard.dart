@@ -5,11 +5,8 @@ import 'package:digimag/pages/dashboard/drawer.dart';
 import 'package:digimag/pages/dashboard/favorites.dart';
 import 'package:digimag/pages/dashboard/home.dart';
 import 'package:digimag/pages/dashboard/search.dart';
-import 'package:digimag/utils/routes.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:digimag/main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
