@@ -1,6 +1,5 @@
 import 'package:digimag/pages/auth/forgotpassword.dart';
 import 'package:digimag/pages/dashboard/categories.dart';
-import 'package:digimag/pages/dashboard/favorites.dart';
 import 'package:digimag/pages/dashboard/home.dart';
 import 'package:digimag/pages/dashboard/search.dart';
 import 'package:digimag/pages/landingpage.dart';
@@ -21,7 +20,7 @@ void main() async {
   }).catchError((error) {
     print("$error");
   });
-  
+
   _checkDataFromSharedPreferences();
   //bool isLoggedIn = await _getLoginStatus();
   runApp(const MyApp());
@@ -76,8 +75,7 @@ class MyApp extends StatelessWidget {
                   const ForgotPasswordPage(),
               MyRoutes.HomeRoute: (context) => const HomePage(),
               MyRoutes.SearchRoute: (context) => const SearchPage(),
-              MyRoutes.CategoriesRoute: (context) => const CategoriesPage(),
-              MyRoutes.FavoriesRoute: (context) => FavoritesPage(),
+              MyRoutes.CategoriesRoute: (context) => CategoriesPage(),
             },
           );
         }));

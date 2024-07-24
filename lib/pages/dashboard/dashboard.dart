@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:digimag/pages/dashboard/categories.dart';
 import 'package:digimag/pages/dashboard/drawer.dart';
-import 'package:digimag/pages/dashboard/favorites.dart';
 import 'package:digimag/pages/dashboard/home.dart';
 import 'package:digimag/pages/dashboard/search.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +18,6 @@ class _DashboardPageState extends State<DashboardPage> {
   int _page = 0;
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
-
   @override
   Widget build(BuildContext context) {
     final themeModel = Provider.of<ThemeModel>(context);
@@ -33,7 +31,6 @@ class _DashboardPageState extends State<DashboardPage> {
     final items = [
       Icon(Icons.home, size: 30, color: iconColor),
       Icon(Icons.search, size: 30, color: iconColor),
-      Icon(Icons.favorite, size: 30, color: iconColor),
       Icon(Icons.category_rounded, size: 30, color: iconColor),
     ];
 
@@ -62,7 +59,6 @@ class _DashboardPageState extends State<DashboardPage> {
         children: [
           HomePage(),
           SearchPage(),
-          FavoritesPage(),
           CategoriesPage(),
         ],
       ),
