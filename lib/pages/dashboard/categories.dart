@@ -26,6 +26,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 
   Future<void> _loadFavorites() async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       final favoriteCategories = await userService.getFavoriteCategories();
       setState(() {
@@ -35,6 +38,12 @@ class _CategoriesPageState extends State<CategoriesPage> {
       });
     } catch (e) {
       print('Error loading favorites: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
