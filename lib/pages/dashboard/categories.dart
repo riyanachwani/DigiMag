@@ -32,7 +32,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     try {
       final favoriteCategories = await userService.getFavoriteCategories();
       setState(() {
-        print("Loaded favorites: $_favoriteCategories");
+        // print("Loaded favorites: $_favoriteCategories");
         _favoriteCategories = favoriteCategories.toSet();
         _updateCategoryLists();
       });
@@ -65,7 +65,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       if (mounted) {
         setState(() {
           _availableCategories = formattedCategories;
-          print("\n\nLoaded available categories: $_availableCategories");
+          // print("\n\nLoaded available categories: $_availableCategories");
           _updateCategoryLists();
         });
       }
@@ -91,8 +91,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
               category[0].toUpperCase() + category.substring(1).toLowerCase())
           .toList();
 
-      print(
-          "\n\nUpdated category lists: liked: $_likedCategories, unliked: $_unlikedCategories");
+      // print(
+      // "\n\nUpdated category lists: liked: $_likedCategories, unliked: $_unlikedCategories");
     });
   }
 
@@ -106,9 +106,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
           _favoriteCategories.remove(formattedCategory);
           _likedCategories.remove(formattedCategory);
           _unlikedCategories.add(formattedCategory);
-          print("Removed category from favorites: $formattedCategory");
-          print(
-              "Updated lists: liked: $_likedCategories, unliked: $_unlikedCategories");
+          // print("Removed category from favorites: $formattedCategory");
+          // print(
+          // "Updated lists: liked: $_likedCategories, unliked: $_unlikedCategories");
         });
       } else {
         await userService.addFavoriteCategory(formattedCategory);
@@ -116,9 +116,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
           _favoriteCategories.add(formattedCategory);
           _likedCategories.add(formattedCategory);
           _unlikedCategories.remove(formattedCategory);
-          print("Added category to favorites: $formattedCategory");
-          print(
-              "Updated lists: liked: $_likedCategories, unliked: $_unlikedCategories");
+          // print("Added category to favorites: $formattedCategory");
+          // print(
+          //     "Updated lists: liked: $_likedCategories, unliked: $_unlikedCategories");
         });
       }
     } catch (e) {

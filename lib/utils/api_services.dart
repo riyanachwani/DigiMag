@@ -11,12 +11,65 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
-      print("DATA FETCHED FROM CURRENT API");
+      print("CATEGORIES LIST FETCHED FROM CURRENT API");
       final data = jsonDecode(response.body);
       final List<String> categories = List<String>.from(data['categories']);
       return categories;
     } else {
       throw Exception('Failed to load categories');
     }
+  }
+
+  Future<List<Article>> getLatestNews() async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/latest-news?apiKey=$_apiKey'),
+    );
+
+    if (response.statusCode == 200) {
+      print("LATEST NEWS FETCHED FROM CURRENT API");
+      final data = jsonDecode(response.body);
+      final List articlesJson = data['news'];
+      return articlesJson.map((json) => Article.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load latest news');
+    }
+  }
+}
+
+class Article {
+  final String id;
+  final String title;
+  final String description;
+  final String url;
+  final String author;
+  final String? image;
+  final String language;
+  final List<String> category;
+  final DateTime published;
+
+  Article({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.url,
+    required this.author,
+    this.image,
+    required this.language,
+    required this.category,
+    required this.published,
+  });
+
+  factory Article.fromJson(Map<String, dynamic> json) {
+    return Article(
+      id: json['id'],
+      title: json['title'],
+      description: json['description'],
+      url: json['url'],
+      author: json['author'],
+      image: json['image'],
+      language: json['language'],
+      category: List<String>.from(json['category']),
+      published: DateTime.parse(json['published']),
+    );
   }
 }
