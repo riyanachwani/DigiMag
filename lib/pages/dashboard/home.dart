@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                                               errorBuilder:
                                                   (context, error, stackTrace) {
                                                 return Image.asset(
-                                                    'assets/landing.jpg');
+                                                    'assets/images/news.png');
                                               },
                                             )
                                           : SizedBox.shrink(),
