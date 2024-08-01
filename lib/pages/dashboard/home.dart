@@ -89,19 +89,19 @@ class _HomePageState extends State<HomePage> {
                                         style: TextStyle(
                                           fontFamily: "RosebayRegular",
                                           color: Colors.black,
-                                          fontSize: 16.0, // Adjusted font size
+                                          fontSize: 16.0, 
                                         ),
                                       ),
                                       SizedBox(height: 15),
                                       Divider(
-                                        thickness: 2.0, // Adjusted thickness
+                                        thickness: 2.0, 
                                         color: Colors
-                                            .grey, // Set desired separator color
-                                        height: 20.0, // Adjusted spacing
+                                            .grey, 
+                                        height: 20.0,
                                         indent:
-                                            20.0, // Adjusted left indentation
+                                            20.0, 
                                         endIndent:
-                                            20.0, // Adjusted right indentation
+                                            20.0, 
                                       ),
                                       SizedBox(height: 20),
                                     ],
