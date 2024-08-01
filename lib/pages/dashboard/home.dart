@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             // PAGE1
             Container(
-              color: Colors.purple.withOpacity(0.1),
+              color: Colors.white,
               width: double.infinity,
               child: FutureBuilder<List<Article>>(
                 future: _articlesFuture,
@@ -52,44 +52,58 @@ class _HomePageState extends State<HomePage> {
                         ...articles
                             .map((article) => Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 22, vertical: 10),
+                                      horizontal: 16,
+                                      vertical:
+                                          10), // Reduced horizontal padding
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      ListTile(
-                                        title: Text(article.title,
-                                            style: TextStyle(
-                                              fontFamily: "RosebayRegular",
-                                              color: Colors.black,
-                                              fontSize: 35.0,
-                                              fontWeight: FontWeight.w400,
-                                            )),
-                                        subtitle: Text(article.description,
-                                            style: TextStyle(
-                                              fontFamily: "RosebayRegular",
-                                              color: Colors.black,
-                                              fontSize: 20.0,
-                                            )),
-                                        onTap: () {
-                                          // Handle article tap
-                                        },
+                                      Text(
+                                        article.title,
+                                        style: TextStyle(
+                                          fontFamily: "RosebayRegular",
+                                          color: Colors.black,
+                                          fontSize: 24.0, // Adjusted font size
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      article.image != null &&
+                                              article.image!.isNotEmpty
+                                          ? Image.network(
+                                              article.image!,
+                                              width: double.infinity,
+                                              height: 200,
+                                              fit: BoxFit.cover,
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                return Image.asset(
+                                                    'assets/landing.jpg');
+                                              },
+                                            )
+                                          : SizedBox.shrink(),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        article.description,
+                                        style: TextStyle(
+                                          fontFamily: "RosebayRegular",
+                                          color: Colors.black,
+                                          fontSize: 16.0, // Adjusted font size
+                                        ),
                                       ),
                                       SizedBox(height: 15),
-                                      SizedBox(height: 40),
                                       Divider(
-                                        thickness:
-                                            4.0, // Adjust thickness as needed
+                                        thickness: 2.0, // Adjusted thickness
                                         color: Colors
                                             .grey, // Set desired separator color
-                                        height:
-                                            0.0, // Adjust spacing above and below the line (optional)
+                                        height: 20.0, // Adjusted spacing
                                         indent:
-                                            20.0, // Adjust left indentation (optional)
+                                            20.0, // Adjusted left indentation
                                         endIndent:
-                                            20.0, // Adjust right indentation (optional)
+                                            20.0, // Adjusted right indentation
                                       ),
-                                      SizedBox(height: 40),
+                                      SizedBox(height: 20),
                                     ],
                                   ),
                                 ))
