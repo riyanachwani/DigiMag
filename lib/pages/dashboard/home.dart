@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16,
                                       vertical:
-                                          10), // Reduced horizontal padding
+                                          10),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                                         style: TextStyle(
                                           fontFamily: "RosebayRegular",
                                           color: Colors.black,
-                                          fontSize: 24.0, // Adjusted font size
+                                          fontSize: 24.0,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
