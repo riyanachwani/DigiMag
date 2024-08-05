@@ -37,7 +37,7 @@ class ApiService {
 
   Future<List<Article>> getArticlesByCategory(String category) async {
     final response = await http.get(
-      Uri.parse('$_baseUrl/latest-news?apiKey=$_apiKey&category=$category'),
+      Uri.parse('$_baseUrl/latest-news?category=$category&apiKey=$_apiKey'),
     );
 
     if (response.statusCode == 200) {
