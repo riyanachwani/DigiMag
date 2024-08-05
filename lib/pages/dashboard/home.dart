@@ -52,9 +52,7 @@ class _HomePageState extends State<HomePage> {
                         ...articles
                             .map((article) => Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical:
-                                          10),
+                                      horizontal: 16, vertical: 10),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -89,19 +87,16 @@ class _HomePageState extends State<HomePage> {
                                         style: TextStyle(
                                           fontFamily: "RosebayRegular",
                                           color: Colors.black,
-                                          fontSize: 16.0, 
+                                          fontSize: 16.0,
                                         ),
                                       ),
                                       SizedBox(height: 15),
                                       Divider(
-                                        thickness: 2.0, 
-                                        color: Colors
-                                            .grey, 
+                                        thickness: 2.0,
+                                        color: Colors.grey,
                                         height: 20.0,
-                                        indent:
-                                            20.0, 
-                                        endIndent:
-                                            20.0, 
+                                        indent: 20.0,
+                                        endIndent: 20.0,
                                       ),
                                       SizedBox(height: 20),
                                     ],
