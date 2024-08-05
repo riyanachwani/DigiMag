@@ -34,6 +34,34 @@ class ApiService {
       throw Exception('Failed to load latest news');
     }
   }
+
+  Future<List<Article>> getArticlesByCategory(String category) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/latest-news?apiKey=$_apiKey&category=$category'),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List articlesJson = data['news'];
+      return articlesJson.map((json) => Article.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load articles');
+    }
+  }
+
+  Future<List<Article>> searchArticles(String query) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/search?apiKey=$_apiKey&keywords=$query'),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List articlesJson = data['news'];
+      return articlesJson.map((json) => Article.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to search articles');
+    }
+  }
 }
 
 class Article {
