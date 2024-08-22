@@ -1,5 +1,7 @@
+import 'package:digimag/main.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
@@ -32,58 +34,79 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeModel themeModel = Provider.of<ThemeModel>(context);
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
-          'Forgot Password',
-          style: TextStyle(color: Colors.white, fontSize: 24),
+          "DigiMag",
+          style: TextStyle(fontFamily: 'RosebayRegular'),
         ),
-        backgroundColor: Colors.blueAccent,
-        elevation: 0.0,
+        actions: [
+          IconButton(
+            onPressed: () {
+              themeModel.toggleTheme();
+            },
+            icon: Icon(
+              themeModel.mode == ThemeMode.light
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
+            ),
+          )
+        ],
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Enter your email address to reset your password',
-                style: TextStyle(fontSize: 18),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'Enter your email address',
-                  border: OutlineInputBorder(),
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+          colors: [Color.fromARGB(125, 209, 191, 239), Colors.white],
+          begin: Alignment.topCenter,
+          end: AlignmentDirectional.bottomCenter,
+        )),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Enter your email address to reset your password',
+                  style: TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center,
                 ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email address';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  auth
-                      .sendPasswordResetEmail(
-                          email: _emailController.text.toString())
-                      .then((value) {
-                    _showAlertDialog(
-                        "Check your email for a password recovery email.");
-                  }).onError((error, stackTrace) {
-                    _showAlertDialog(error.toString());
-                  });
-                },
-                child: Text('Reset Password'),
-              ),
-            ],
+                SizedBox(height: 20),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    hintText: 'Enter your email address',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email address';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    auth
+                        .sendPasswordResetEmail(
+                            email: _emailController.text.toString())
+                        .then((value) {
+                      _showAlertDialog(
+                          "Check your email for a password recovery email.");
+                    }).onError((error, stackTrace) {
+                      _showAlertDialog(error.toString());
+                    });
+                  },
+                  child: Text('Reset Password'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

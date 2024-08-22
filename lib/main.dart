@@ -27,7 +27,7 @@ void main() async {
 }
 
 class ThemeModel extends ChangeNotifier {
-  ThemeMode _mode = ThemeMode.light;
+  ThemeMode _mode = ThemeMode.system;
   ThemeMode get mode => _mode;
   void toggleTheme() {
     _mode = _mode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
@@ -44,11 +44,6 @@ Future<void> _checkDataFromSharedPreferences() async {
 
   // Print or use the data.
   print('isLoggedIn: $isLoggedIn');
-}
-
-Future<bool> _getLoginStatus() async {
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool('isLoggedIn') ?? false;
 }
 
 class MyApp extends StatelessWidget {

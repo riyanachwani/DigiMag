@@ -86,7 +86,7 @@ class _LandingPageState extends State<LandingPage> {
               ),
             ),
             // This Container holds the text below the image
-            SizedBox(height: 20), // Reduced space between title and description
+            SizedBox(height: 20), 
 
             Container(
               padding: EdgeInsets.symmetric(
@@ -111,7 +111,7 @@ class _LandingPageState extends State<LandingPage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.normal, // Changed to normal weight
-                      fontSize: 18, // Adjusted font size for better readability
+                      fontSize: 18, 
                       color: const Color.fromARGB(255, 122, 122, 122),
                       height: 1.5,
                     ),
