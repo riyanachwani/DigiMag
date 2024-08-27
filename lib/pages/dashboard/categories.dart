@@ -32,7 +32,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
     try {
       final favoriteCategories = await userService.getFavoriteCategories();
       setState(() {
-        // print("Loaded favorites: $_favoriteCategories");
         _favoriteCategories = favoriteCategories.toSet();
         _updateCategoryLists();
       });
@@ -65,7 +64,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
       if (mounted) {
         setState(() {
           _availableCategories = formattedCategories;
-          // print("\n\nLoaded available categories: $_availableCategories");
           _updateCategoryLists();
         });
       }
@@ -90,9 +88,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
           .map((category) =>
               category[0].toUpperCase() + category.substring(1).toLowerCase())
           .toList();
-
-      // print(
-      // "\n\nUpdated category lists: liked: $_likedCategories, unliked: $_unlikedCategories");
     });
   }
 
