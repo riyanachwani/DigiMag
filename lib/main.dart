@@ -3,7 +3,7 @@ import 'package:digimag/pages/auth/forgotpassword.dart';
 import 'package:digimag/pages/dashboard/categories.dart';
 import 'package:digimag/pages/dashboard/home.dart';
 import 'package:digimag/pages/dashboard/search.dart';
-import 'package:digimag/pages/landingpage.dart';
+import 'package:digimag/pages/landingpage.dart' as landing;
 import 'package:digimag/widgets/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,16 +16,10 @@ import 'pages/dashboard/dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp().then((_) {
-    print("Firebase initialized successfully");
-  }).catchError((error) {
-    print("$error");
-  });
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  _checkDataFromSharedPreferences();
-  //bool isLoggedIn = await _getLoginStatus();
+  await _checkDataFromSharedPreferences();
   runApp(const MyApp());
 }
 
@@ -64,11 +58,11 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: MyRoutes.landingRoute,
             routes: {
-              "/": (context) => LandingPage(),
+              "/": (context) => landing.LandingPage(),
               MyRoutes.dashboardRoute: (context) => const DashboardPage(),
               MyRoutes.registerRoute: (context) => const RegisterPage(),
               MyRoutes.signinRoute: (context) => const SigninPage(),
-              MyRoutes.landingRoute: (context) => const LandingPage(),
+              MyRoutes.landingRoute: (context) => const landing.LandingPage(),
               MyRoutes.forgotpasswordRoute: (context) =>
                   const ForgotPasswordPage(),
               MyRoutes.HomeRoute: (context) => const HomePage(),
