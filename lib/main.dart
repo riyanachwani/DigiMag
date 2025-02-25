@@ -1,3 +1,4 @@
+import 'package:digimag/firebase_options.dart';
 import 'package:digimag/pages/auth/forgotpassword.dart';
 import 'package:digimag/pages/dashboard/categories.dart';
 import 'package:digimag/pages/dashboard/home.dart';
@@ -20,7 +21,9 @@ void main() async {
   }).catchError((error) {
     print("$error");
   });
-
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   _checkDataFromSharedPreferences();
   //bool isLoggedIn = await _getLoginStatus();
   runApp(const MyApp());
