@@ -3,7 +3,7 @@ import 'package:digimag/pages/auth/forgotpassword.dart';
 import 'package:digimag/pages/dashboard/categories.dart';
 import 'package:digimag/pages/dashboard/home.dart';
 import 'package:digimag/pages/dashboard/search.dart';
-import 'package:digimag/pages/landingpage.dart' as landing;
+import 'package:digimag/pages/onboarding/landingpage.dart' as landing;
 import 'package:digimag/widgets/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
