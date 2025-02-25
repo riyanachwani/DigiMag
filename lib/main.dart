@@ -7,6 +7,7 @@ import 'package:digimag/pages/onboarding/landingpage.dart' as landing;
 import 'package:digimag/widgets/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'utils/routes.dart';
 import 'package:provider/provider.dart';
@@ -15,11 +16,16 @@ import 'pages/auth/signin.dart';
 import 'pages/dashboard/dashboard.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await _checkDataFromSharedPreferences();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  Future.delayed(const Duration(seconds: 3), () {
+    FlutterNativeSplash.remove(); // Removes splash after 2 seconds
+  });
   runApp(const MyApp());
 }
 
@@ -58,7 +64,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: MyRoutes.landingRoute,
             routes: {
-              "/": (context) => landing.LandingPage(),
+              "/": (context) => const landing.LandingPage(),
               MyRoutes.dashboardRoute: (context) => const DashboardPage(),
               MyRoutes.registerRoute: (context) => const RegisterPage(),
               MyRoutes.signinRoute: (context) => const SigninPage(),

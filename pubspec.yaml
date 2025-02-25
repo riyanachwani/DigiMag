@@ -46,6 +46,7 @@ dependencies:
   provider: ^6.1.2
   curved_navigation_bar: ^1.0.6
   flutter_dotenv: ^5.0.2
+  flutter_native_splash: ^2.2.0+1
 
 dev_dependencies:
   flutter_test:
@@ -83,8 +84,13 @@ flutter:
       fonts:
         - asset: assets/fonts/Aller_Rg.ttf
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware
+flutter_native_splash:
+  color: "#ffffff" # Background color
+  image: assets/images/applogo.png # Path to your logo
+  android: true
+  ios: true
+  web: true
 
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
+  android_12:
+    image: assets/images/applogo.png
+    icon_background_color: "#ffffff"
