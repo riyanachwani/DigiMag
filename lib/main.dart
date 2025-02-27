@@ -45,7 +45,6 @@ Future<void> _checkDataFromSharedPreferences() async {
   // Retrieve data.
   bool? isLoggedIn = prefs.getBool('isLoggedIn');
 
-  // Print or use the data.
   print('isLoggedIn: $isLoggedIn');
 }
 
