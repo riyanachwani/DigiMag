@@ -7,5 +7,5 @@ class MyRoutes {
   static String homeRoute = '/home';
   static String categoriesRoute = '/categories';
   static String searchRoute = '/search';
-  static String splashRoute = '/splash';
+  static String splashRoute = '/';
 }
