@@ -16,16 +16,12 @@ import 'pages/auth/signin.dart';
 import 'pages/dashboard/dashboard.dart';
 
 void main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await _checkDataFromSharedPreferences();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  Future.delayed(const Duration(seconds: 3), () {
-    FlutterNativeSplash.remove(); // Removes splash after 2 seconds
-  });
   runApp(const MyApp());
 }
 

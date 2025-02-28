@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digimag/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -121,43 +123,43 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> GoogleRegister() async {
-    try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
+  try {
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+      clientId:
+          "1058201854206-2vtgp3rb978b8itl4o92or1vhpqblilf.apps.googleusercontent.com", // Web Client ID
+    );
 
-      // Sign out of any existing session to ensure we start fresh
-      await googleSignIn.signOut();
+    await googleSignIn.signOut();
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    
+    if (googleUser != null) {
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
-      // Proceed with sign in and account picker
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-      if (googleUser != null) {
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      User? user = userCredential.user;
 
-        final UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithCredential(credential);
-        User? user = userCredential.user;
+      if (user != null) {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'Name': user.displayName ?? "",
+          'Email': user.email ?? "",
+        });
 
-        if (user != null) {
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .set({
-            'Name': user.displayName ?? "",
-            'Email': user.email ?? "",
-          });
-          await _saveLoginStatus(true); // Save login status
-          Navigator.pushReplacementNamed(context, MyRoutes.dashboardRoute);
-        }
+        await _saveLoginStatus(true);
+        Navigator.pushReplacementNamed(context, MyRoutes.dashboardRoute);
       }
-    } catch (e) {
-      print("Error during Google Sign-In: $e");
     }
+  } catch (e) {
+    log("Error during Google Sign-In: $e");
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
