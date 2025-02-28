@@ -1,22 +1,22 @@
+import 'package:digimag/pages/onboarding/splash_screen.dart';
 import 'package:digimag/utils/firebase_options.dart';
 import 'package:digimag/pages/auth/forgotpassword.dart';
 import 'package:digimag/pages/dashboard/categories.dart';
 import 'package:digimag/pages/dashboard/home.dart';
 import 'package:digimag/pages/dashboard/search.dart';
-import 'package:digimag/pages/onboarding/landingpage.dart' as landing;
+import 'package:digimag/pages/onboarding/landingpage.dart';
 import 'package:digimag/widgets/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'utils/routes.dart';
+import 'utils/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'pages/auth/register.dart';
 import 'pages/auth/signin.dart';
 import 'pages/dashboard/dashboard.dart';
 
 void main() async {
-WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -27,10 +27,29 @@ WidgetsFlutterBinding.ensureInitialized();
 
 class ThemeModel extends ChangeNotifier {
   ThemeMode _mode = ThemeMode.system;
+
+  ThemeModel() {
+    _loadTheme();
+  }
+
   ThemeMode get mode => _mode;
+
   void toggleTheme() {
     _mode = _mode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    _saveTheme(_mode);
     notifyListeners();
+  }
+
+  Future<void> _loadTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool isDark = prefs.getBool('isDarkMode') ?? false;
+    _mode = isDark ? ThemeMode.dark : ThemeMode.light;
+    notifyListeners();
+  }
+
+  Future<void> _saveTheme(ThemeMode mode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDarkMode', mode == ThemeMode.dark);
   }
 }
 
@@ -57,18 +76,18 @@ class MyApp extends StatelessWidget {
             theme: MyTheme.lightTheme(context),
             darkTheme: MyTheme.darkTheme(context),
             debugShowCheckedModeBanner: false,
-            initialRoute: MyRoutes.landingRoute,
+            initialRoute: MyRoutes.splashRoute,
             routes: {
-              "/": (context) => const landing.LandingPage(),
+              "/": (context) => const SplashScreen(),
               MyRoutes.dashboardRoute: (context) => const DashboardPage(),
               MyRoutes.registerRoute: (context) => const RegisterPage(),
               MyRoutes.signinRoute: (context) => const SigninPage(),
-              MyRoutes.landingRoute: (context) => const landing.LandingPage(),
+              MyRoutes.landingRoute: (context) => const LandingPage(),
               MyRoutes.forgotpasswordRoute: (context) =>
                   const ForgotPasswordPage(),
-              MyRoutes.HomeRoute: (context) => const HomePage(),
-              MyRoutes.SearchRoute: (context) => const SearchPage(),
-              MyRoutes.CategoriesRoute: (context) => CategoriesPage(),
+              MyRoutes.homeRoute: (context) => const HomePage(),
+              MyRoutes.searchRoute: (context) => const SearchPage(),
+              MyRoutes.categoriesRoute: (context) => CategoriesPage(),
             },
           );
         }));

@@ -4,7 +4,8 @@ class MyRoutes {
   static String registerRoute = '/register';
   static String landingRoute = '/landing';
   static String forgotpasswordRoute = '/forgotpassword';
-  static String HomeRoute = '/home';
-  static String CategoriesRoute = '/categories';
-  static String SearchRoute = '/search';
+  static String homeRoute = '/home';
+  static String categoriesRoute = '/categories';
+  static String searchRoute = '/search';
+  static String splashRoute = '/splash';
 }

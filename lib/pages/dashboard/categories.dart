@@ -1,8 +1,8 @@
 import 'package:digimag/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:digimag/utils/user_services.dart';
-import 'package:digimag/utils/api_services.dart';
+import 'package:digimag/utils/services/user_services.dart';
+import 'package:digimag/utils/services/api_services.dart';
 
 class CategoriesPage extends StatefulWidget {
   @override

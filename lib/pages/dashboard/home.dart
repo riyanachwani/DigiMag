@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:digimag/utils/api_services.dart';
+import 'package:digimag/utils/services/api_services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

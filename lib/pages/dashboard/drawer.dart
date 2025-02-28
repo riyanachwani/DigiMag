@@ -1,7 +1,7 @@
-import 'package:digimag/utils/user_services.dart';
+import 'package:digimag/utils/services/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:digimag/utils/routes.dart';
+import 'package:digimag/utils/routes/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerPage extends StatefulWidget {

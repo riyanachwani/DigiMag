@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../utils/routes.dart';
+import '../../utils/routes/routes.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
