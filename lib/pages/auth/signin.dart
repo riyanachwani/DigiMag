@@ -115,7 +115,6 @@ class _SigninPageState extends State<SigninPage> {
         final UserCredential userCredential =
             await FirebaseAuth.instance.signInWithCredential(credential);
 
-        // Perform post-sign-in actions, e.g., save user info or navigate
         User? user = userCredential.user;
 
         if (user != null) {
