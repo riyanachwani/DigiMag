@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:digimag/pages/dashboard/dashboard/news_detail.dart';
 import 'package:digimag/pages/dashboard/drawer/about_us.dart';
 import 'package:digimag/pages/dashboard/drawer/bookmarks.dart';
@@ -68,7 +70,7 @@ Future<void> _checkDataFromSharedPreferences() async {
   // Retrieve data.
   bool? isLoggedIn = prefs.getBool('isLoggedIn');
 
-  print('isLoggedIn: $isLoggedIn');
+  log('isLoggedIn: $isLoggedIn');
 }
 
 class MyApp extends StatelessWidget {
