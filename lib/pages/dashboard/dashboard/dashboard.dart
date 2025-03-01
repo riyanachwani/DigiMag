@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:digimag/pages/dashboard/categories.dart';
-import 'package:digimag/pages/dashboard/drawer.dart';
-import 'package:digimag/pages/dashboard/home.dart';
-import 'package:digimag/pages/dashboard/search.dart';
+import 'package:digimag/pages/dashboard/dashboard/categories.dart';
+import 'package:digimag/pages/dashboard/drawer/drawer.dart';
+import 'package:digimag/pages/dashboard/dashboard/home.dart';
+import 'package:digimag/pages/dashboard/dashboard/search.dart';
 import 'package:provider/provider.dart';
 import 'package:digimag/main.dart';
 

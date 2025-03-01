@@ -1,10 +1,10 @@
-import 'package:digimag/pages/dashboard/news_detail.dart';
+import 'package:digimag/pages/dashboard/dashboard/news_detail.dart';
 import 'package:digimag/pages/onboarding/splash_screen.dart';
 import 'package:digimag/utils/firebase_options.dart';
 import 'package:digimag/pages/auth/forgotpassword.dart';
-import 'package:digimag/pages/dashboard/categories.dart';
-import 'package:digimag/pages/dashboard/home.dart';
-import 'package:digimag/pages/dashboard/search.dart';
+import 'package:digimag/pages/dashboard/dashboard/categories.dart';
+import 'package:digimag/pages/dashboard/dashboard/home.dart';
+import 'package:digimag/pages/dashboard/dashboard/search.dart';
 import 'package:digimag/pages/onboarding/landingpage.dart';
 import 'package:digimag/utils/services/api_services.dart';
 import 'package:digimag/widgets/themes.dart';
@@ -15,7 +15,7 @@ import 'utils/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'pages/auth/register.dart';
 import 'pages/auth/signin.dart';
-import 'pages/dashboard/dashboard.dart';
+import 'pages/dashboard/dashboard/dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
