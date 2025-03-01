@@ -46,7 +46,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
     // EmailJS API details
     const serviceId = 'service_n1l8wdg'; 
-    const templateId = 'template_welayn5'; // Your EmailJS Template ID
+    const templateId = 'template_welayn5'; 
     const userId = 'nPK05NiIdmRfWb5tF'; 
     const emailEndpoint = 'https://api.emailjs.com/api/v1.0/email/send';
 
@@ -60,7 +60,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
         'user_email': _emailController.text,
         'user_feedback': _feedbackController.text,
         'user_rating': '⭐' * _rating, // Pass star rating
-        'to_email': 'riyanachwani220@gmail.com' // Send to your email
+        'to_email': 'riyanachwani220@gmail.com' // Send to email
       },
     };
 
