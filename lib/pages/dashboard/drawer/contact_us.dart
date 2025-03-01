@@ -22,7 +22,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
   @override
   void initState() {
     super.initState();
-    _loadUserInfo(); // Load user info on page load
+    _loadUserInfo(); 
   }
 
   /// **Load user info from Firestore**
