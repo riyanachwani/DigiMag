@@ -46,9 +46,9 @@ class MyTheme {
         ),
         textTheme: const TextTheme(
           titleLarge:
-              TextStyle(color: Colors.white), // 🔄 Text color for dark mode
+              TextStyle(color: Colors.white), 
           bodyMedium:
-              TextStyle(color: Colors.white70), // 🔄 Text color for dark mode
+              TextStyle(color: Colors.white70), 
         ),
         appBarTheme: const AppBarTheme(
           color: Colors.black,
