@@ -45,7 +45,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     setState(() => _isLoading = true);
 
     // EmailJS API details
-    const serviceId = 'service_n1l8wdg'; // Your Gmail Service ID
+    const serviceId = 'service_n1l8wdg'; 
     const templateId = 'template_welayn5'; // Your EmailJS Template ID
     const userId = 'nPK05NiIdmRfWb5tF'; // Your EmailJS Public Key
     const emailEndpoint = 'https://api.emailjs.com/api/v1.0/email/send';
