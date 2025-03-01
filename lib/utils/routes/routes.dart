@@ -8,4 +8,6 @@ class MyRoutes {
   static String categoriesRoute = '/categories';
   static String searchRoute = '/search';
   static String splashRoute = '/';
+  static String newsRoute = '/news';
+
 }

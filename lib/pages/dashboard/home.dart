@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:digimag/utils/services/api_services.dart';
+import 'package:digimag/utils/routes/routes.dart';
+import 'news_detail.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,90 +29,126 @@ class _HomePageState extends State<HomePage> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // PAGE1
-            Container(
-              color: Colors.white,
-              width: double.infinity,
-              child: FutureBuilder<List<Article>>(
-                future: _articlesFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(child: Text('No articles available.'));
-                  } else {
-                    final articles = snapshot.data!;
-                    return Column(
+      body: FutureBuilder<List<Article>>(
+        future: _articlesFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No articles available.'));
+          } else {
+            final articles = snapshot.data!
+                .where((article) =>
+                    article.image != null && article.image!.isNotEmpty)
+                .toList(); // ✅ Filters articles without an image
+
+            if (articles.isEmpty) {
+              return Center(child: Text('No articles with images available.'));
+            }
+
+            return ListView.builder(
+              padding: EdgeInsets.all(10),
+              itemCount: articles.length,
+              itemBuilder: (context, index) {
+                final article = articles[index];
+
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      MyRoutes.newsRoute,
+                      arguments: article, // ✅ Passes the article object
+                    );
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 3,
+                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ...articles
-                            .map((article) => Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 10),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        article.title,
-                                        style: TextStyle(
-                                          fontFamily: "RosebayRegular",
-                                          color: Colors.black,
-                                          fontSize: 24.0,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      SizedBox(height: 10),
-                                      article.image != null &&
-                                              article.image!.isNotEmpty
-                                          ? Image.network(
-                                              article.image!,
-                                              width: double.infinity,
-                                              height: 200,
-                                              fit: BoxFit.cover,
-                                              errorBuilder:
-                                                  (context, error, stackTrace) {
-                                                return Image.asset(
-                                                    'assets/images/news.png');
-                                              },
-                                            )
-                                          : SizedBox.shrink(),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        article.description,
-                                        style: TextStyle(
-                                          fontFamily: "RosebayRegular",
-                                          color: Colors.black,
-                                          fontSize: 16.0,
-                                        ),
-                                      ),
-                                      SizedBox(height: 15),
-                                      Divider(
-                                        thickness: 2.0,
-                                        color: Colors.grey,
-                                        height: 20.0,
-                                        indent: 20.0,
-                                        endIndent: 20.0,
-                                      ),
-                                      SizedBox(height: 20),
-                                    ],
+                        ClipRRect(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(12)),
+                          child: Image.network(
+                            article.image!,
+                            width: double.infinity,
+                            height: 200,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset('assets/images/news.png',
+                                  height: 200, fit: BoxFit.cover);
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                article.title,
+                                style: TextStyle(
+                                  fontFamily: "RosebayRegular",
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.black
+                                      : Colors.white,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                article.description,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.grey[700]
+                                      : const Color.fromARGB(
+                                          255, 148, 146, 146),
+                                ),
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "The Guardian", // ✅ No author data from API
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500),
                                   ),
-                                ))
-                            .toList(),
+                                  Text(
+                                    "${DateTime.parse(article.publishedDate).toLocal()}"
+                                        .split(
+                                            ' ')[0], // ✅ Converts to DateTime
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
-                    );
-                  }
-                },
-              ),
-            ),
-          ],
-        ),
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+        },
       ),
     );
   }

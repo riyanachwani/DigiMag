@@ -123,43 +123,45 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> GoogleRegister() async {
-  try {
-    final GoogleSignIn googleSignIn = GoogleSignIn(
-      clientId:
-          "1058201854206-2vtgp3rb978b8itl4o92or1vhpqblilf.apps.googleusercontent.com", // Web Client ID
-    );
-
-    await googleSignIn.signOut();
-    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-    
-    if (googleUser != null) {
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        clientId:
+            "1058201854206-2vtgp3rb978b8itl4o92or1vhpqblilf.apps.googleusercontent.com", // Web Client ID
       );
 
-      final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      User? user = userCredential.user;
+      await googleSignIn.signOut();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-      if (user != null) {
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-          'Name': user.displayName ?? "",
-          'Email': user.email ?? "",
-        });
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
 
-        await _saveLoginStatus(true);
-        Navigator.pushReplacementNamed(context, MyRoutes.dashboardRoute);
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        final UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+        User? user = userCredential.user;
+
+        if (user != null) {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .set({
+            'Name': user.displayName ?? "",
+            'Email': user.email ?? "",
+          });
+
+          await _saveLoginStatus(true);
+          Navigator.pushReplacementNamed(context, MyRoutes.dashboardRoute);
+        }
       }
+    } catch (e) {
+      log("Error during Google Sign-In: $e");
     }
-  } catch (e) {
-    log("Error during Google Sign-In: $e");
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -190,11 +192,17 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color.fromARGB(125, 209, 191, 239), Colors.white],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+            gradient: themeModel.mode == ThemeMode.light
+                ? LinearGradient(
+                    colors: [Color.fromARGB(125, 209, 191, 239), Colors.white],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  )
+                : LinearGradient(
+                    colors: [Color.fromARGB(122, 118, 104, 141), Colors.black],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
           ),
           child: SafeArea(
             child: Form(

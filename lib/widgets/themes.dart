@@ -5,6 +5,9 @@ class MyTheme {
   static ThemeData lightTheme(BuildContext context) => ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         fontFamily: GoogleFonts.arOneSans().fontFamily,
+        drawerTheme: DrawerThemeData(
+          backgroundColor: Colors.white,
+        ),
         appBarTheme: AppBarTheme(
           color: Color.fromARGB(125, 209, 191, 239),
           elevation: 0.0,
@@ -16,6 +19,10 @@ class MyTheme {
   static ThemeData darkTheme(BuildContext context) => ThemeData(
         brightness: Brightness.dark,
         fontFamily: GoogleFonts.arOneSans().fontFamily,
+        scaffoldBackgroundColor: Colors.black,
+        drawerTheme: DrawerThemeData(
+          backgroundColor: Colors.black,
+        ),
         appBarTheme: AppBarTheme(
           color: Colors.black,
           elevation: 0.0,

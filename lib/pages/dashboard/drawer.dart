@@ -47,23 +47,26 @@ class _DrawerPageState extends State<DrawerPage> {
     Navigator.of(context).pushReplacementNamed(MyRoutes.landingRoute);
   }
 
-
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     return Drawer(
       child: Container(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountName: Text(
                 _userInfo['Name'] ?? 'Name',
-                style: TextStyle(color: Colors.black),
+                style:
+                    TextStyle(color: isDarkMode ? Colors.white : Colors.black),
               ),
               accountEmail: Text(
                 _userInfo['Email'] ?? 'Email',
-                style: TextStyle(color: Colors.black),
+                style:
+                    TextStyle(color: isDarkMode ? Colors.white : Colors.black),
               ),
               decoration: BoxDecoration(
                 color: Colors.purple.withOpacity(0.1),

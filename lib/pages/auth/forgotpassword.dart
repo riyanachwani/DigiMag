@@ -57,11 +57,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       ),
       body: Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-          colors: [Color.fromARGB(125, 209, 191, 239), Colors.white],
-          begin: Alignment.topCenter,
-          end: AlignmentDirectional.bottomCenter,
-        )),
+          gradient: themeModel.mode == ThemeMode.light
+              ? LinearGradient(
+                  colors: [Color.fromARGB(125, 209, 191, 239), Colors.white],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                )
+              : LinearGradient(
+                  colors: [Color.fromARGB(122, 118, 104, 141), Colors.black],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+        ),
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(20.0),

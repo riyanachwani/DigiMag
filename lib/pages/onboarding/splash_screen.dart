@@ -1,5 +1,3 @@
-import 'package:digimag/pages/dashboard/dashboard.dart';
-import 'package:digimag/pages/onboarding/landingpage.dart';
 import 'package:digimag/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,17 +34,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple,
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               "assets/images/applogo.png",
-              width: 150,
+              width: 300,
+              height: 300 ,
             ),
-            const SizedBox(height: 20),
-            const CircularProgressIndicator(color: Colors.white),
           ],
         ),
       ),

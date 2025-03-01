@@ -1,3 +1,4 @@
+import 'package:digimag/pages/dashboard/news_detail.dart';
 import 'package:digimag/pages/onboarding/splash_screen.dart';
 import 'package:digimag/utils/firebase_options.dart';
 import 'package:digimag/pages/auth/forgotpassword.dart';
@@ -5,6 +6,7 @@ import 'package:digimag/pages/dashboard/categories.dart';
 import 'package:digimag/pages/dashboard/home.dart';
 import 'package:digimag/pages/dashboard/search.dart';
 import 'package:digimag/pages/onboarding/landingpage.dart';
+import 'package:digimag/utils/services/api_services.dart';
 import 'package:digimag/widgets/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -88,6 +90,10 @@ class MyApp extends StatelessWidget {
               MyRoutes.homeRoute: (context) => const HomePage(),
               MyRoutes.searchRoute: (context) => const SearchPage(),
               MyRoutes.categoriesRoute: (context) => CategoriesPage(),
+              MyRoutes.newsRoute: (context) => NewsDetailPage(
+                    article:
+                        ModalRoute.of(context)!.settings.arguments as Article,
+                  ),
             },
           );
         }));

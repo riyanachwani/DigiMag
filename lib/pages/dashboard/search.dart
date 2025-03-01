@@ -1,7 +1,5 @@
 import 'package:digimag/utils/services/api_services.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -75,7 +73,10 @@ class _SearchPageState extends State<SearchPage> {
                             article.title,
                             style: TextStyle(
                               fontFamily: "RosebayRegular",
-                              color: Colors.black,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black
+                                  : Colors.white,
                               fontSize: 16.0,
                             ),
                           ),
@@ -83,7 +84,10 @@ class _SearchPageState extends State<SearchPage> {
                             article.description,
                             style: TextStyle(
                               // fontFamily: "RosebayRegular",
-                              color: Colors.black,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black
+                                  : Colors.white,
                               fontSize: 14.0,
                             ),
                           ),
