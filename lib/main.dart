@@ -1,4 +1,5 @@
 import 'package:digimag/pages/dashboard/dashboard/news_detail.dart';
+import 'package:digimag/pages/dashboard/drawer/about_us.dart';
 import 'package:digimag/pages/dashboard/drawer/bookmarks.dart';
 import 'package:digimag/pages/dashboard/drawer/contact_us.dart';
 import 'package:digimag/pages/dashboard/drawer/feedback.dart';
@@ -99,6 +100,7 @@ class MyApp extends StatelessWidget {
               MyRoutes.contactRoute: (context) => const ContactUsPage(),
               MyRoutes.settingsRoute: (context) => const SettingsPage(),
               MyRoutes.feedbackRoute: (context) => const FeedbackPage(),
+              MyRoutes.aboutRoute: (context) => const AboutUsPage(),
               MyRoutes.privacypolicyRoute: (context) =>
                   const PrivacyPolicyPage(),
               MyRoutes.newsRoute: (context) => NewsDetailPage(

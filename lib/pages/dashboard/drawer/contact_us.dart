@@ -45,7 +45,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
     setState(() => _isLoading = true);
 
     const serviceId = 'service_n1l8wdg';
-    const templateId = 'template_2f23zbq';
+    const templateId = 'template_cujdsxg';
     const userId = 'nPK05NiIdmRfWb5tF';
     const emailEndpoint = 'https://api.emailjs.com/api/v1.0/email/send';
 

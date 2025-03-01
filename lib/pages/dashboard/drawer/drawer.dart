@@ -95,7 +95,7 @@ class _DrawerPageState extends State<DrawerPage> {
               leading: const Icon(Icons.info),
               title: const Text('About Us'),
               onTap: () {
-                //Navigator.pushNamed(context, MyRoutes.aboutRoute);
+                Navigator.pushNamed(context, MyRoutes.aboutRoute);
               },
             ),
             ListTile(

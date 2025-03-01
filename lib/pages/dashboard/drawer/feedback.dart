@@ -46,8 +46,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
     // EmailJS API details
     const serviceId = 'service_n1l8wdg'; // Your Gmail Service ID
-    const templateId = 'template_2f23zbq'; // Your EmailJS Template ID
-    const userId = 'your_public_key'; // Your EmailJS Public Key
+    const templateId = 'template_welayn5'; // Your EmailJS Template ID
+    const userId = 'nPK05NiIdmRfWb5tF'; // Your EmailJS Public Key
     const emailEndpoint = 'https://api.emailjs.com/api/v1.0/email/send';
 
     // Prepare email data
@@ -207,7 +207,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
                             onPressed: _submitFeedback,
                             child: const Text(
                               'Submit Feedback',
-                              style: TextStyle(fontSize: 18),
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Color(
+                                    0xFFFFFFFF,
+                                  )),
                             ),
                           ),
                         ),

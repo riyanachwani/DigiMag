@@ -107,28 +107,28 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             article.title,
-                            style: TextStyle(
-                              fontFamily: "RosebayRegular",
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
-                                  ?.color, // 🔄 Uses theme color for adaptive text color
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  // 🔄 Fixes color update issue
+                                  fontFamily: "RosebayRegular",
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 5),
                           Text(
                             article.description,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.color, // 🔄 Uses theme color for description
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  // 🔄 Fixes color update issue
+                                  fontSize: 14.0,
+                                ),
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -136,18 +136,28 @@ class _HomePageState extends State<HomePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 "The Guardian",
-                                style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w500),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                               ),
                               Row(
                                 children: [
                                   Text(
                                     "${DateTime.parse(article.publishedDate).toLocal()}"
                                         .split(' ')[0],
-                                    style: const TextStyle(
-                                        fontSize: 12, color: Colors.grey),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                        ),
                                   ),
                                   const SizedBox(width: 8),
                                   GestureDetector(

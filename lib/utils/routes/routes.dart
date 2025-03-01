@@ -14,6 +14,5 @@ class MyRoutes {
   static String feedbackRoute = '/feedback';
   static String privacypolicyRoute = '/privacypolicy';
   static String settingsRoute = '/settings';
-
-
+  static String aboutRoute = '/about';
 }

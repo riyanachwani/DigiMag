@@ -1,5 +1,6 @@
-import 'package:digimag/utils/services/api_services.dart';
 import 'package:flutter/material.dart';
+import 'package:digimag/utils/services/api_services.dart';
+import 'package:digimag/pages/dashboard/dashboard/news_detail.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -67,31 +68,47 @@ class _SearchPageState extends State<SearchPage> {
                       itemCount: articles.length,
                       itemBuilder: (context, index) {
                         final article = articles[index];
-                        return ListTile(
-                          title: Text(
-                            article.title,
-                            style: TextStyle(
-                              fontFamily: "RosebayRegular",
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
-                                  ?.color, // 🔄 Adaptive text color
-                              fontSize: 16.0,
-                            ),
+                        return Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          subtitle: Text(
-                            article.description,
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.color, // 🔄 Adaptive text color
-                              fontSize: 14.0,
-                            ),
+                          elevation: 3,
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          child: Builder(
+                            builder: (context) {
+                              // 🔄 Ensures latest theme is applied
+                              return ListTile(
+                                title: Text(
+                                  article.title,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.copyWith(
+                                        fontFamily: "RosebayRegular",
+                                        fontSize: 16.0,
+                                      ),
+                                ),
+                                subtitle: Text(
+                                  article.description,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(fontSize: 14.0),
+                                ),
+                                onTap: () {
+                                  // ✅ Navigate to News Detail Page
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => NewsDetailPage(
+                                        article: article,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
                           ),
-                          onTap: () {
-                            // Handle article tap, e.g., navigate to detail page
-                          },
                         );
                       },
                     ),
