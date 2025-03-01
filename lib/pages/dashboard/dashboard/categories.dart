@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:digimag/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +38,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
         _updateCategoryLists();
       });
     } catch (e) {
-      print('Error loading favorites: $e');
+      log('Error loading favorites: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -53,7 +55,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
     try {
       List<String> categories = await apiService.getAvailableCategories();
 
-      // Capitalize the first letter and lowercase the rest of each category
       List<String> formattedCategories = categories.map((category) {
         if (category.isEmpty) return category; // Handle empty strings
         String formattedCategory =
@@ -68,7 +69,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
         });
       }
     } catch (e) {
-      print('Error loading categories: $e');
+      log('Error loading categories: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -101,8 +102,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
           _favoriteCategories.remove(formattedCategory);
           _likedCategories.remove(formattedCategory);
           _unlikedCategories.add(formattedCategory);
-          // print("Removed category from favorites: $formattedCategory");
-          // print(
+          // log("Removed category from favorites: $formattedCategory");
+          // log(
           // "Updated lists: liked: $_likedCategories, unliked: $_unlikedCategories");
         });
       } else {
@@ -111,13 +112,13 @@ class _CategoriesPageState extends State<CategoriesPage> {
           _favoriteCategories.add(formattedCategory);
           _likedCategories.add(formattedCategory);
           _unlikedCategories.remove(formattedCategory);
-          // print("Added category to favorites: $formattedCategory");
-          // print(
+          // log("Added category to favorites: $formattedCategory");
+          // log(
           //     "Updated lists: liked: $_likedCategories, unliked: $_unlikedCategories");
         });
       }
     } catch (e) {
-      print('Error toggling category: $e');
+      log('Error toggling category: $e');
     }
   }
 

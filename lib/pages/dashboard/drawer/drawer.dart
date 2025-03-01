@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:digimag/utils/services/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,7 +32,7 @@ class _DrawerPageState extends State<DrawerPage> {
         _userInfo = userInfo;
       });
     } catch (e) {
-      print("Failed to load user info: $e");
+      log("Failed to load user info: $e");
       setState(() {
         _userInfo = {
           'name': 'Error loading name',

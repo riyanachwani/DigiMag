@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:digimag/utils/services/user_services.dart';
@@ -34,7 +35,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
         _emailController.text = userInfo['Email'] ?? '';
       });
     } catch (e) {
-      print('Failed to load user info: $e');
+      log('Failed to load user info: $e');
     }
   }
 

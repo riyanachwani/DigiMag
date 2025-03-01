@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:digimag/utils/services/api_services.dart';
 import 'package:digimag/pages/dashboard/dashboard/news_detail.dart';
@@ -22,7 +24,7 @@ class _SearchPageState extends State<SearchPage> {
     try {
       articles = await ApiService().searchArticles(query);
     } catch (e) {
-      print('Error searching articles: $e');
+      log('Error searching articles: $e');
     }
 
     setState(() {
