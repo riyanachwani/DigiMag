@@ -47,7 +47,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     // EmailJS API details
     const serviceId = 'service_n1l8wdg'; 
     const templateId = 'template_welayn5'; // Your EmailJS Template ID
-    const userId = 'nPK05NiIdmRfWb5tF'; // Your EmailJS Public Key
+    const userId = 'nPK05NiIdmRfWb5tF'; 
     const emailEndpoint = 'https://api.emailjs.com/api/v1.0/email/send';
 
     // Prepare email data
