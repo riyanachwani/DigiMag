@@ -19,7 +19,7 @@ class MyTheme {
   static ThemeData lightTheme(BuildContext context) => ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         fontFamily: GoogleFonts.arOneSans().fontFamily,
-        scaffoldBackgroundColor: const Color(0xFFF5F5F5), // 🔄 Light background
+        scaffoldBackgroundColor: const Color(0xFFF5F5F5), 
         drawerTheme: const DrawerThemeData(
           backgroundColor: Colors.white,
         ),
