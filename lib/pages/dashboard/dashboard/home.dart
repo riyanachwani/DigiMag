@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:digimag/utils/services/api_services.dart';
-import 'package:digimag/utils/routes/routes.dart';
-import 'news_detail.dart';
+import 'package:digimag/utils/services/user_services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,142 +11,168 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<Article>> _articlesFuture;
+  final UserService _userService = UserService();
+  final Set<String> _bookmarkedArticles = {};
 
   @override
   void initState() {
     super.initState();
     _articlesFuture = ApiService().getLatestNews();
+    _loadBookmarks();
+  }
+
+  Future<void> _loadBookmarks() async {
+    final bookmarks = await _userService.getBookmarks();
+    setState(() {
+      _bookmarkedArticles.addAll(bookmarks.map((e) => e['title'] as String));
+    });
+  }
+
+  Future<void> _toggleBookmark(Article article) async {
+    final isBookmarked = _bookmarkedArticles.contains(article.title);
+    if (isBookmarked) {
+      final bookmarks = await _userService.getBookmarks();
+      final bookmark = bookmarks.firstWhere((b) => b['title'] == article.title);
+      await _userService.removeBookmark(bookmark['id']);
+    } else {
+      await _userService.addBookmark({
+        'title': article.title,
+        'description': article.description,
+        'image': article.image,
+        'url': article.url,
+        'publishedDate': article.publishedDate,
+      });
+    }
+    _loadBookmarks();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Articles",
-          style: TextStyle(fontFamily: "RosebayRegular", fontSize: 20),
-        ),
-        automaticallyImplyLeading: false,
-      ),
       body: FutureBuilder<List<Article>>(
         future: _articlesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No articles available.'));
-          } else {
-            final articles = snapshot.data!
-                .where((article) =>
-                    article.image != null && article.image!.isNotEmpty)
-                .toList(); // ✅ Filters articles without an image
+            return const Center(child: Text('No articles available.'));
+          }
 
-            if (articles.isEmpty) {
-              return Center(child: Text('No articles with images available.'));
-            }
+          final articles = snapshot.data!
+              .where((article) =>
+                  article.image != null && article.image!.isNotEmpty)
+              .toList();
 
-            return ListView.builder(
-              padding: EdgeInsets.all(10),
-              itemCount: articles.length,
-              itemBuilder: (context, index) {
-                final article = articles[index];
+          if (articles.isEmpty) {
+            return const Center(
+                child: Text('No articles with images available.'));
+          }
 
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      MyRoutes.newsRoute,
-                      arguments: article, // ✅ Passes the article object
-                    );
-                  },
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+          return ListView.builder(
+            padding: const EdgeInsets.all(10),
+            itemCount: articles.length,
+            itemBuilder: (context, index) {
+              final article = articles[index];
+              final isBookmarked = _bookmarkedArticles.contains(article.title);
+
+              return Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 3,
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius:
+                          const BorderRadius.vertical(top: Radius.circular(12)),
+                      child: Image.network(
+                        article.image!,
+                        width: double.infinity,
+                        height: 200,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset('assets/images/news.png',
+                              height: 200, fit: BoxFit.cover);
+                        },
+                      ),
                     ),
-                    elevation: 3,
-                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(12)),
-                          child: Image.network(
-                            article.image!,
-                            width: double.infinity,
-                            height: 200,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.asset('assets/images/news.png',
-                                  height: 200, fit: BoxFit.cover);
-                            },
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            article.title,
+                            style: TextStyle(
+                              fontFamily: "RosebayRegular",
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.color, // 🔄 Uses theme color for adaptive text color
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          const SizedBox(height: 5),
+                          Text(
+                            article.description,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.color, // 🔄 Uses theme color for description
+                            ),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                article.title,
+                              const Text(
+                                "The Guardian",
                                 style: TextStyle(
-                                  fontFamily: "RosebayRegular",
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? Colors.black
-                                      : Colors.white,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
+                                    fontSize: 12, fontWeight: FontWeight.w500),
                               ),
-                              SizedBox(height: 5),
-                              Text(
-                                article.description,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? Colors.grey[700]
-                                      : const Color.fromARGB(
-                                          255, 148, 146, 146),
-                                ),
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              SizedBox(height: 10),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "The Guardian", // ✅ No author data from API
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  Text(
                                     "${DateTime.parse(article.publishedDate).toLocal()}"
-                                        .split(
-                                            ' ')[0], // ✅ Converts to DateTime
-                                    style: TextStyle(
+                                        .split(' ')[0],
+                                    style: const TextStyle(
                                         fontSize: 12, color: Colors.grey),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  GestureDetector(
+                                    onTap: () => _toggleBookmark(article),
+                                    child: Icon(
+                                      isBookmarked
+                                          ? Icons.bookmark
+                                          : Icons.bookmark_border,
+                                      color: isBookmarked
+                                          ? Colors.blue
+                                          : Colors.grey,
+                                    ),
                                   ),
                                 ],
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            );
-          }
+                  ],
+                ),
+              );
+            },
+          );
         },
       ),
     );

@@ -78,4 +78,45 @@ class UserService {
       'Favorites': FieldValue.arrayRemove([category]),
     });
   }
+
+  // 🛠 Save an article to bookmarks
+  Future<void> addBookmark(Map<String, dynamic> article) async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('bookmarks')
+          .add(article);
+    }
+  }
+
+  // 🛠 Remove an article from bookmarks
+  Future<void> removeBookmark(String articleId) async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('bookmarks')
+          .doc(articleId)
+          .delete();
+    }
+  }
+
+  // 🛠 Get all bookmarked articles
+  Future<List<Map<String, dynamic>>> getBookmarks() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      QuerySnapshot snapshot = await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('bookmarks')
+          .get();
+      return snapshot.docs
+          .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
+          .toList();
+    }
+    return [];
+  }
 }

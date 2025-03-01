@@ -1,4 +1,9 @@
 import 'package:digimag/pages/dashboard/dashboard/news_detail.dart';
+import 'package:digimag/pages/dashboard/drawer/bookmarks.dart';
+import 'package:digimag/pages/dashboard/drawer/contact_us.dart';
+import 'package:digimag/pages/dashboard/drawer/feedback.dart';
+import 'package:digimag/pages/dashboard/drawer/privacy_policy.dart';
+import 'package:digimag/pages/dashboard/drawer/settings.dart';
 import 'package:digimag/pages/onboarding/splash_screen.dart';
 import 'package:digimag/utils/firebase_options.dart';
 import 'package:digimag/pages/auth/forgotpassword.dart';
@@ -90,6 +95,12 @@ class MyApp extends StatelessWidget {
               MyRoutes.homeRoute: (context) => const HomePage(),
               MyRoutes.searchRoute: (context) => const SearchPage(),
               MyRoutes.categoriesRoute: (context) => CategoriesPage(),
+              MyRoutes.bookmarksRoute: (context) => BookmarksPage(),
+              MyRoutes.contactRoute: (context) => const ContactUsPage(),
+              MyRoutes.settingsRoute: (context) => const SettingsPage(),
+              MyRoutes.feedbackRoute: (context) => const FeedbackPage(),
+              MyRoutes.privacypolicyRoute: (context) =>
+                  const PrivacyPolicyPage(),
               MyRoutes.newsRoute: (context) => NewsDetailPage(
                     article:
                         ModalRoute.of(context)!.settings.arguments as Article,

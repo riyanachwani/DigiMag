@@ -9,5 +9,11 @@ class MyRoutes {
   static String searchRoute = '/search';
   static String splashRoute = '/';
   static String newsRoute = '/news';
+  static String bookmarksRoute = '/bookmarks';
+  static String contactRoute = '/contact';
+  static String feedbackRoute = '/feedback';
+  static String privacypolicyRoute = '/privacypolicy';
+  static String settingsRoute = '/settings';
+
 
 }

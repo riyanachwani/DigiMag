@@ -33,18 +33,17 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Search Articles",
           style: TextStyle(fontFamily: "RosebayRegular", fontSize: 20),
         ),
-        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.search),
                 hintText: 'Search Articles',
                 border: OutlineInputBorder(),
@@ -60,9 +59,9 @@ class _SearchPageState extends State<SearchPage> {
                 }
               },
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             isLoading
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : Expanded(
                     child: ListView.builder(
                       itemCount: articles.length,
@@ -73,21 +72,20 @@ class _SearchPageState extends State<SearchPage> {
                             article.title,
                             style: TextStyle(
                               fontFamily: "RosebayRegular",
-                              color: Theme.of(context).brightness ==
-                                      Brightness.light
-                                  ? Colors.black
-                                  : Colors.white,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.color, // 🔄 Adaptive text color
                               fontSize: 16.0,
                             ),
                           ),
                           subtitle: Text(
                             article.description,
                             style: TextStyle(
-                              // fontFamily: "RosebayRegular",
-                              color: Theme.of(context).brightness ==
-                                      Brightness.light
-                                  ? Colors.black
-                                  : Colors.white,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.color, // 🔄 Adaptive text color
                               fontSize: 14.0,
                             ),
                           ),
