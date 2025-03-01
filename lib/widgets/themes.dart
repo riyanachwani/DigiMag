@@ -25,9 +25,9 @@ class MyTheme {
         ),
         textTheme: TextTheme(
           titleLarge: const TextStyle(
-              color: Colors.black), // 🔄 Text color for light mode
+              color: Colors.black), 
           bodyMedium: const TextStyle(
-              color: Colors.black87), // 🔄 Text color for light mode
+              color: Colors.black87), 
         ),
         appBarTheme: const AppBarTheme(
           color: Color.fromARGB(125, 209, 191, 239),
