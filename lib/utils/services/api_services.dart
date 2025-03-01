@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -12,7 +13,7 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
-      print("✅ CATEGORIES LIST FETCHED FROM THE GUARDIAN API");
+      log("✅ CATEGORIES LIST FETCHED FROM THE GUARDIAN API");
       final data = jsonDecode(response.body);
       final List sections = data['response']['results'];
       return sections.map<String>((section) => section['id']).toList();
@@ -29,7 +30,7 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
-      print("✅ LATEST NEWS FETCHED FROM THE GUARDIAN API");
+      log("✅ LATEST NEWS FETCHED FROM THE GUARDIAN API");
       final data = jsonDecode(response.body);
       final List articlesJson = data['response']['results'];
       return articlesJson.map((json) => Article.fromJson(json)).toList();
@@ -46,7 +47,7 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
-      print("✅ ARTICLES FOR CATEGORY '$category' FETCHED");
+      log("✅ ARTICLES FOR CATEGORY '$category' FETCHED");
       final data = jsonDecode(response.body);
       final List articlesJson = data['response']['results'];
       return articlesJson.map((json) => Article.fromJson(json)).toList();
@@ -65,7 +66,7 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
-      print("✅ SEARCH RESULTS FETCHED FOR QUERY: '$query'");
+      log("✅ SEARCH RESULTS FETCHED FOR QUERY: '$query'");
       final data = jsonDecode(response.body);
       final List articlesJson = data['response']['results'];
       return articlesJson.map((json) => Article.fromJson(json)).toList();
