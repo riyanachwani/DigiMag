@@ -40,18 +40,30 @@ class ApiService {
   }
 
   // Fetch articles by category
+  // Fetch articles by category
   Future<List<Article>> getArticlesByCategory(String category) async {
-    final response = await http.get(
-      Uri.parse(
-          '$_baseUrl/search?section=$category&show-fields=headline,thumbnail,trailText&api-key=$_apiKey'),
-    );
+    final url =
+        '$_baseUrl/search?section=$category&show-fields=headline,thumbnail,trailText&api-key=$_apiKey';
+    log("🌐 Fetching articles for category: $category");
+    log("🔗 API URL: $url");
+
+    final response = await http.get(Uri.parse(url));
+
+    log("HTTP Status Code: ${response.statusCode}");
+    log("Response Body: ${response.body}");
 
     if (response.statusCode == 200) {
       log("✅ ARTICLES FOR CATEGORY '$category' FETCHED");
       final data = jsonDecode(response.body);
       final List articlesJson = data['response']['results'];
+
+      if (articlesJson.isEmpty) {
+        log("⚠️ No articles found for category: $category");
+      }
+
       return articlesJson.map((json) => Article.fromJson(json)).toList();
     } else {
+      log("❌ Failed to load articles for category: $category");
       throw Exception('❌ Failed to load articles for category: $category');
     }
   }
@@ -82,7 +94,7 @@ class Article {
   final String description;
   final String url;
   final String? image;
-  final String publishedDate; 
+  final String publishedDate;
 
   Article({
     required this.id,
@@ -100,8 +112,7 @@ class Article {
       description: json['fields']['trailText'] ?? "No Description",
       url: json['webUrl'], // ✅ Correct URL usage
       image: json['fields']['thumbnail'] ?? "", // ✅ Handle null images
-      publishedDate:
-          json['webPublicationDate'] ?? "", 
+      publishedDate: json['webPublicationDate'] ?? "",
     );
   }
 }

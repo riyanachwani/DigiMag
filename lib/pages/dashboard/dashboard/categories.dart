@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:digimag/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:digimag/utils/services/user_services.dart';
+import 'package:digimag/main.dart';
 import 'package:digimag/utils/services/api_services.dart';
+import 'package:digimag/utils/providers/category_provider.dart';
 
 class CategoriesPage extends StatefulWidget {
   @override
@@ -12,40 +12,16 @@ class CategoriesPage extends StatefulWidget {
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
-  Set<String> _favoriteCategories = {};
   List<String> _availableCategories = [];
   List<String> _likedCategories = [];
   List<String> _unlikedCategories = [];
   bool _isLoading = false;
-  final UserService userService = UserService();
   final ApiService apiService = ApiService();
 
   @override
   void initState() {
     super.initState();
-    _loadFavorites();
     _loadAvailableCategories();
-  }
-
-  Future<void> _loadFavorites() async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      final favoriteCategories = await userService.getFavoriteCategories();
-      setState(() {
-        _favoriteCategories = favoriteCategories.toSet();
-        _updateCategoryLists();
-      });
-    } catch (e) {
-      log('Error loading favorites: $e');
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
   }
 
   Future<void> _loadAvailableCategories() async {
@@ -80,12 +56,15 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 
   void _updateCategoryLists() {
+    final categoryProvider =
+        Provider.of<CategoryProvider>(context, listen: false);
     setState(() {
-      _likedCategories = _favoriteCategories.toList();
+      _likedCategories = categoryProvider.likedCategories.toList();
 
       // Capitalize the first letter and lowercase the rest for consistency
       _unlikedCategories = _availableCategories
-          .where((category) => !_favoriteCategories.contains(category))
+          .where((category) =>
+              !categoryProvider.likedCategories.contains(category))
           .map((category) =>
               category[0].toUpperCase() + category.substring(1).toLowerCase())
           .toList();
@@ -93,38 +72,15 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 
   Future<void> _toggleFavoriteCategory(String category) async {
-    try {
-      String formattedCategory =
-          category[0].toUpperCase() + category.substring(1).toLowerCase();
-      if (_favoriteCategories.contains(formattedCategory)) {
-        await userService.removeFavoriteCategory(formattedCategory);
-        setState(() {
-          _favoriteCategories.remove(formattedCategory);
-          _likedCategories.remove(formattedCategory);
-          _unlikedCategories.add(formattedCategory);
-          // log("Removed category from favorites: $formattedCategory");
-          // log(
-          // "Updated lists: liked: $_likedCategories, unliked: $_unlikedCategories");
-        });
-      } else {
-        await userService.addFavoriteCategory(formattedCategory);
-        setState(() {
-          _favoriteCategories.add(formattedCategory);
-          _likedCategories.add(formattedCategory);
-          _unlikedCategories.remove(formattedCategory);
-          // log("Added category to favorites: $formattedCategory");
-          // log(
-          //     "Updated lists: liked: $_likedCategories, unliked: $_unlikedCategories");
-        });
-      }
-    } catch (e) {
-      log('Error toggling category: $e');
-    }
+    final categoryProvider =
+        Provider.of<CategoryProvider>(context, listen: false);
+    await categoryProvider.toggleCategory(category);
+    _updateCategoryLists(); // Update lists immediately after toggling
   }
 
   @override
   Widget build(BuildContext context) {
-
+    final categoryProvider = Provider.of<CategoryProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -149,14 +105,16 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       setState(() {
                         _likedCategories = _availableCategories
                             .where((category) =>
-                                _favoriteCategories.contains(category) &&
+                                categoryProvider.likedCategories
+                                    .contains(category) &&
                                 category
                                     .toLowerCase()
                                     .contains(value.toLowerCase()))
                             .toList();
                         _unlikedCategories = _availableCategories
                             .where((category) =>
-                                !_favoriteCategories.contains(category) &&
+                                !categoryProvider.likedCategories
+                                    .contains(category) &&
                                 category
                                     .toLowerCase()
                                     .contains(value.toLowerCase()))
@@ -201,7 +159,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
           ),
         ),
         ...categories.map((category) {
-          bool isFavorite = _favoriteCategories.contains(category);
+          bool isFavorite = Provider.of<CategoryProvider>(context)
+              .likedCategories
+              .contains(category);
           return Card(
             margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 15.0),
             shape: RoundedRectangleBorder(

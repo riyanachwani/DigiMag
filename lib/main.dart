@@ -15,6 +15,7 @@ import 'package:digimag/pages/dashboard/dashboard/home.dart';
 import 'package:digimag/pages/dashboard/dashboard/search.dart';
 import 'package:digimag/pages/onboarding/landingpage.dart';
 import 'package:digimag/utils/services/api_services.dart';
+import 'package:digimag/utils/providers/category_provider.dart';
 import 'package:digimag/widgets/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -44,17 +45,17 @@ class ThemeModel extends ChangeNotifier {
 
   ThemeMode get mode => _mode;
 
-  void toggleTheme() {
+  Future<void> toggleTheme() async {
     _mode = _mode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     _saveTheme(_mode);
-    notifyListeners();
+    notifyListeners(); // notify listeners after the theme change
   }
 
   Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
     bool isDark = prefs.getBool('isDarkMode') ?? false;
     _mode = isDark ? ThemeMode.dark : ThemeMode.light;
-    notifyListeners();
+    notifyListeners(); // notify listeners after the theme has been loaded
   }
 
   Future<void> _saveTheme(ThemeMode mode) async {
@@ -78,8 +79,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => ThemeModel(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => ThemeModel()),
+          ChangeNotifierProvider(
+              create: (_) => CategoryProvider()), // 🛠 Provide CategoryProvider
+        ],
         child: Consumer<ThemeModel>(builder: (context, themeModel, child) {
           return MaterialApp(
             themeMode: themeModel.mode,

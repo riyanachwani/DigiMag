@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> {
         'publishedDate': article.publishedDate,
       });
     }
+    // Re-load bookmarks to ensure state is updated after toggling
     _loadBookmarks();
   }
 
@@ -111,10 +112,13 @@ class _HomePageState extends State<HomePage> {
                                 .textTheme
                                 .titleLarge
                                 ?.copyWith(
-                                  // 🔄 Fixes color update issue
                                   fontFamily: "RosebayRegular",
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.color, // Ensure color is updated
                                 ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -126,8 +130,11 @@ class _HomePageState extends State<HomePage> {
                                 .textTheme
                                 .bodyMedium
                                 ?.copyWith(
-                                  // 🔄 Fixes color update issue
                                   fontSize: 14.0,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color, // Ensure color is updated
                                 ),
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,

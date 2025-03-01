@@ -111,7 +111,6 @@ class _SigninPageState extends State<SigninPage> {
           idToken: googleAuth.idToken,
         );
 
-        
         final UserCredential userCredential =
             await FirebaseAuth.instance.signInWithCredential(credential);
 
