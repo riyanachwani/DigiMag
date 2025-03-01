@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:digimag/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,7 +64,7 @@ class _SigninPageState extends State<SigninPage> {
           _showAlertDialog("Error in Registering. Try Again");
         }
       } catch (e) {
-        print("Error $e");
+        log("Error $e");
       }
     }
   }
@@ -81,13 +83,13 @@ class _SigninPageState extends State<SigninPage> {
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        print("Account with the same email already exists.");
+        log("Account with the same email already exists.");
       } else {
-        print("Error signing in-Check the email and password again.");
+        log("Error signing in-Check the email and password again.");
       }
       return null;
     } catch (e) {
-      print("Error $e");
+      log("Error $e");
       return null;
     }
   }
@@ -123,7 +125,7 @@ class _SigninPageState extends State<SigninPage> {
         }
       }
     } catch (e) {
-      print("Error during Google Sign-In: $e");
+      log("Error during Google Sign-In: $e");
     }
   }
 

@@ -79,7 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
           _showAlertDialog("Error in Signing In. Try Again");
         }
       } catch (e) {
-        print("Error $e");
+        log("Error $e");
       }
     }
   }
@@ -109,15 +109,15 @@ class _RegisterPageState extends State<RegisterPage> {
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print("No user found for that email.");
+        log("No user found for that email.");
       } else if (e.code == 'wrong-password') {
-        print("Wrong password provided for that user.");
+        log("Wrong password provided for that user.");
       } else {
-        print("Error signing in. Check the email and password again.");
+        log("Error signing in. Check the email and password again.");
       }
       return null;
     } catch (e) {
-      print("Error $e");
+      log("Error $e");
       return null;
     }
   }
