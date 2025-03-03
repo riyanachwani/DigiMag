@@ -1,5 +1,7 @@
+import 'package:digimag/main.dart';
 import 'package:digimag/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
@@ -33,16 +35,23 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeModel = Provider.of<ThemeModel>(context);
+    
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
+backgroundColor:
+          themeModel.mode == ThemeMode.light ? Colors.white : Colors.black,
+            body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              "assets/images/applogo.png",
+              "assets/images/applogo.png", // Same logo file
               width: 300,
-              height: 300 ,
+              height: 300,
+              color: themeModel.mode == ThemeMode.light
+                  ? Colors.black
+                  : Colors.white, // 🟢 Tint logo based on theme
+              colorBlendMode: BlendMode.srcIn, // Apply color tint
             ),
           ],
         ),

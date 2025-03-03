@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:digimag/utils/services/api_services.dart';
 import 'package:digimag/utils/providers/bookmark_provider.dart';
+import 'package:digimag/utils/providers/category_provider.dart'; // Import CategoryProvider
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,16 +12,28 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late Future<List<Article>> _articlesFuture;
+  Future<List<Article>>? _articlesFuture;
 
   @override
   void initState() {
     super.initState();
-    _articlesFuture = ApiService().getLatestNews();
-    Provider.of<BookmarkProvider>(context, listen: false)
-        .loadBookmarks(); // Load bookmarks initially
+    Provider.of<BookmarkProvider>(context, listen: false).loadBookmarks();
   }
 
+  // 🟢 Fetch articles based on favorite categories dynamically
+  // 🟢 Fetch articles for all favorite categories
+  Future<List<Article>> _fetchFavoriteCategoryArticles(
+      List<String> favoriteCategories) async {
+    log("🟢 Favorite Categories in HomePage: $favoriteCategories");
+    if (favoriteCategories.isNotEmpty) {
+      return await ApiService().getArticlesByCategories(favoriteCategories);
+    } else {
+      log("⚠️ No favorite categories selected.");
+      return [];
+    }
+  }
+
+// 🟢 Toggle bookmarks as usual
   Future<void> _toggleBookmark(Article article) async {
     final bookmarkProvider =
         Provider.of<BookmarkProvider>(context, listen: false);
@@ -26,12 +41,10 @@ class _HomePageState extends State<HomePage> {
         bookmarkProvider.bookmarks.any((b) => b['title'] == article.title);
 
     if (isBookmarked) {
-      // 🟡 Remove bookmark if already bookmarked
       final bookmark = bookmarkProvider.bookmarks
           .firstWhere((b) => b['title'] == article.title);
       await bookmarkProvider.removeBookmark(bookmark['id']);
     } else {
-      // 🟢 Add bookmark if not bookmarked
       await bookmarkProvider.addBookmark({
         'title': article.title,
         'description': article.description,
@@ -44,16 +57,23 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // 🔄 Listen for changes in favorite categories in real-time
+    final favoriteCategories =
+        context.watch<CategoryProvider>().likedCategories.toList();
+
     return Scaffold(
       body: FutureBuilder<List<Article>>(
-        future: _articlesFuture,
+        future: _fetchFavoriteCategoryArticles(
+            favoriteCategories), // Fetch articles dynamically
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No articles available.'));
+            return const Center(
+                child: Text(
+                    'No articles available for your favorite categories.'));
           }
 
           final articles = snapshot.data!

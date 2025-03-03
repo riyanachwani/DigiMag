@@ -68,6 +68,38 @@ class ApiService {
     }
   }
 
+  Future<List<Article>> getArticlesByCategories(List<String> categories) async {
+    List<Article> allArticles = [];
+
+    for (String category in categories) {
+      final url =
+          '$_baseUrl/search?section=$category&show-fields=headline,thumbnail,trailText&api-key=$_apiKey';
+      log("🌐 Fetching articles for category: $category");
+      log("🔗 API URL: $url");
+
+      final response = await http.get(Uri.parse(url));
+
+      log("HTTP Status Code for $category: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List articlesJson = data['response']['results'];
+        if (articlesJson.isEmpty) {
+          log("⚠️ No articles found for category: $category");
+        }
+        final articles =
+            articlesJson.map((json) => Article.fromJson(json)).toList();
+        allArticles.addAll(articles); // Merge articles into one list
+      } else {
+        log("❌ Failed to load articles for category: $category");
+        log("Response Body: ${response.body}"); // Print error response
+      }
+    }
+
+    log("✅ Total articles fetched: ${allArticles.length}");
+    return allArticles;
+  }
+
   // Search articles by query
   Future<List<Article>> searchArticles(String query) async {
     final encodedQuery =

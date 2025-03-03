@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:digimag/utils/services/user_services.dart';
 
@@ -16,14 +18,24 @@ class CategoryProvider extends ChangeNotifier {
     notifyListeners(); // 🔄 Notify listeners when liked categories are loaded
   }
 
-  Future<void> toggleCategory(String category) async {
+  void toggleLikeCategory(String category) {
     if (_likedCategories.contains(category)) {
-      await _userService.removeFavoriteCategory(category);
       _likedCategories.remove(category);
     } else {
-      await _userService.addFavoriteCategory(category);
       _likedCategories.add(category);
     }
-    notifyListeners(); // 🔄 Notify listeners when a category is liked/unliked
+    log("❤️ Liked Categories: $_likedCategories");
+    notifyListeners();
   }
+
+  Future<void> toggleCategory(String category) async {
+  if (_likedCategories.contains(category)) {
+    _likedCategories.remove(category);
+  } else {
+    _likedCategories.add(category);
+  }
+  log("❤️ Liked Categories: $_likedCategories");
+  notifyListeners();
+}
+
 }
