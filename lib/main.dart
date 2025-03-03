@@ -6,7 +6,6 @@ import 'package:digimag/pages/dashboard/drawer/bookmarks.dart';
 import 'package:digimag/pages/dashboard/drawer/contact_us.dart';
 import 'package:digimag/pages/dashboard/drawer/feedback.dart';
 import 'package:digimag/pages/dashboard/drawer/privacy_policy.dart';
-import 'package:digimag/pages/dashboard/drawer/settings.dart';
 import 'package:digimag/pages/onboarding/splash_screen.dart';
 import 'package:digimag/utils/firebase_options.dart';
 import 'package:digimag/pages/auth/forgotpassword.dart';
@@ -108,7 +107,6 @@ class MyApp extends StatelessWidget {
               MyRoutes.categoriesRoute: (context) => CategoriesPage(),
               MyRoutes.bookmarksRoute: (context) => BookmarksPage(),
               MyRoutes.contactRoute: (context) => const ContactUsPage(),
-              MyRoutes.settingsRoute: (context) => const SettingsPage(),
               MyRoutes.feedbackRoute: (context) => const FeedbackPage(),
               MyRoutes.aboutRoute: (context) => const AboutUsPage(),
               MyRoutes.privacypolicyRoute: (context) =>
