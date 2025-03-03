@@ -5,6 +5,9 @@ class AboutUsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -17,10 +20,15 @@ class AboutUsPage extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              const Color(0xFFB69DF8),
-              Color.fromARGB(125, 209, 191, 239),
-            ],
+            colors: isDarkMode
+                ? [
+                    const Color(0xFF3A3A3A),
+                    const Color.fromARGB(255, 105, 104, 104)
+                  ]
+                : [
+                    const Color(0xFFB69DF8),
+                    const Color.fromARGB(255, 255, 255, 255)
+                  ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -33,6 +41,9 @@ class AboutUsPage extends StatelessWidget {
             ),
             elevation: 8,
             margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+            color: isDarkMode
+                ? const Color.fromARGB(255, 46, 46, 46)
+                : Colors.white,
             child: Padding(
               padding: const EdgeInsets.all(25.0),
               child: Column(
@@ -47,23 +58,21 @@ class AboutUsPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 0),
-                  const Center(
+                  Center(
                     child: Text(
                       'DigiMag',
-                      style: TextStyle(
-                        fontSize: 30,
+                      style: theme.textTheme.titleLarge?.copyWith(
                         fontFamily: 'RosebayRegular',
-                        color: Colors.black,
+                        color: isDarkMode ? Colors.white : Colors.black,
                       ),
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Center(
+                  Center(
                     child: Text(
                       'Your Daily Dose of Information',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: isDarkMode ? Colors.grey[400] : Colors.grey[800],
                       ),
                     ),
                   ),
@@ -73,6 +82,7 @@ class AboutUsPage extends StatelessWidget {
                     title: 'Our Mission',
                     description:
                         'At DigiMag, our mission is to deliver accurate, engaging, and timely information to our readers. We aim to empower people with knowledge and insights that make a difference in their everyday lives.',
+                    isDarkMode: isDarkMode,
                   ),
                   const SizedBox(height: 20),
                   _buildSection(
@@ -80,6 +90,7 @@ class AboutUsPage extends StatelessWidget {
                     title: 'Our Vision',
                     description:
                         'To become a trusted and leading source of news and information, connecting readers globally and fostering an informed community.',
+                    isDarkMode: isDarkMode,
                   ),
                   const SizedBox(height: 20),
                   _buildSection(
@@ -87,6 +98,7 @@ class AboutUsPage extends StatelessWidget {
                     title: 'Our Core Values',
                     description:
                         '1. Accuracy\n2. Integrity\n3. Transparency\n4. Innovation\n5. Reader Focus',
+                    isDarkMode: isDarkMode,
                   ),
                   const SizedBox(height: 30),
                   Center(
@@ -126,6 +138,7 @@ class AboutUsPage extends StatelessWidget {
     required IconData icon,
     required String title,
     required String description,
+    required bool isDarkMode,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,10 +149,10 @@ class AboutUsPage extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF7B42F6),
+                color: isDarkMode ? Colors.white : const Color(0xFF7B42F6),
               ),
             ),
           ],
@@ -147,8 +160,11 @@ class AboutUsPage extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           description,
-          style:
-              const TextStyle(fontSize: 16, height: 1.5, color: Colors.black87),
+          style: TextStyle(
+            fontSize: 16,
+            height: 1.5,
+            color: isDarkMode ? Colors.grey[300] : Colors.black87,
+          ),
         ),
       ],
     );

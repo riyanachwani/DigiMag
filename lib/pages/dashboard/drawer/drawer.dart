@@ -114,6 +114,13 @@ class _DrawerPageState extends State<DrawerPage> {
                 Navigator.pushNamed(context, MyRoutes.contactRoute);
               },
             ),
+            // ListTile(
+            //   leading: const Icon(Icons.settings),
+            //   title: const Text('Settings'),
+            //   onTap: () {
+            //     Navigator.pushNamed(context, MyRoutes.settingsRoute);
+            //   },
+            // ),
             const Divider(), // Adds a divider above the Logout option
             ListTile(
               leading: const Icon(Icons.logout),
