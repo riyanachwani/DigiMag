@@ -82,6 +82,19 @@ class UserService {
     });
   }
 
+Future<bool> checkIfBookmarked(String articleTitle) async {
+  User? user = await _getCurrentUser();
+  if (user != null) {
+    QuerySnapshot snapshot = await _firestore
+        .collection('users')
+        .doc(user.uid)
+        .collection('bookmarks')
+        .where('title', isEqualTo: articleTitle)
+        .get();
+    return snapshot.docs.isNotEmpty;
+  }
+  return false;
+}
   // Save an article to bookmarks
   Future<void> addBookmark(Map<String, dynamic> article) async {
     User? user = await _getCurrentUser();

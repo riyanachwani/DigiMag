@@ -14,6 +14,7 @@ import 'package:digimag/pages/dashboard/dashboard/categories.dart';
 import 'package:digimag/pages/dashboard/dashboard/home.dart';
 import 'package:digimag/pages/dashboard/dashboard/search.dart';
 import 'package:digimag/pages/onboarding/landingpage.dart';
+import 'package:digimag/utils/providers/bookmark_provider.dart';
 import 'package:digimag/utils/services/api_services.dart';
 import 'package:digimag/utils/providers/category_provider.dart';
 import 'package:digimag/widgets/themes.dart';
@@ -84,6 +85,8 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => ThemeModel()),
           ChangeNotifierProvider(
               create: (_) => CategoryProvider()), // 🛠 Provide CategoryProvider
+          ChangeNotifierProvider(
+              create: (_) => BookmarkProvider()), // 🛠 Provide CategoryProvider
         ],
         child: Consumer<ThemeModel>(builder: (context, themeModel, child) {
           return MaterialApp(
@@ -100,7 +103,7 @@ class MyApp extends StatelessWidget {
               MyRoutes.landingRoute: (context) => const LandingPage(),
               MyRoutes.forgotpasswordRoute: (context) =>
                   const ForgotPasswordPage(),
-              MyRoutes.homeRoute: (context) => const HomePage(),
+              MyRoutes.homeRoute: (context) => HomePage(),
               MyRoutes.searchRoute: (context) => const SearchPage(),
               MyRoutes.categoriesRoute: (context) => CategoriesPage(),
               MyRoutes.bookmarksRoute: (context) => BookmarksPage(),

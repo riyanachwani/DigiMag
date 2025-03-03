@@ -1,41 +1,38 @@
-import 'package:flutter/material.dart';
 import 'package:digimag/utils/services/api_services.dart';
-import 'package:digimag/utils/services/user_services.dart';
+import 'package:digimag/utils/providers/bookmark_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   late Future<List<Article>> _articlesFuture;
-  final UserService _userService = UserService();
-  final Set<String> _bookmarkedArticles = {};
 
   @override
   void initState() {
     super.initState();
     _articlesFuture = ApiService().getLatestNews();
-    _loadBookmarks();
-  }
-
-  Future<void> _loadBookmarks() async {
-    final bookmarks = await _userService.getBookmarks();
-    setState(() {
-      _bookmarkedArticles.addAll(bookmarks.map((e) => e['title'] as String));
-    });
+    Provider.of<BookmarkProvider>(context, listen: false)
+        .loadBookmarks(); // Load bookmarks initially
   }
 
   Future<void> _toggleBookmark(Article article) async {
-    final isBookmarked = _bookmarkedArticles.contains(article.title);
+    final bookmarkProvider =
+        Provider.of<BookmarkProvider>(context, listen: false);
+    final isBookmarked =
+        bookmarkProvider.bookmarks.any((b) => b['title'] == article.title);
+
     if (isBookmarked) {
-      final bookmarks = await _userService.getBookmarks();
-      final bookmark = bookmarks.firstWhere((b) => b['title'] == article.title);
-      await _userService.removeBookmark(bookmark['id']);
+      // 🟡 Remove bookmark if already bookmarked
+      final bookmark = bookmarkProvider.bookmarks
+          .firstWhere((b) => b['title'] == article.title);
+      await bookmarkProvider.removeBookmark(bookmark['id']);
     } else {
-      await _userService.addBookmark({
+      // 🟢 Add bookmark if not bookmarked
+      await bookmarkProvider.addBookmark({
         'title': article.title,
         'description': article.description,
         'image': article.image,
@@ -43,13 +40,14 @@ class _HomePageState extends State<HomePage> {
         'publishedDate': article.publishedDate,
       });
     }
-    // Re-load bookmarks to ensure state is updated after toggling
-    _loadBookmarks();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Latest News'),
+      ),
       body: FutureBuilder<List<Article>>(
         future: _articlesFuture,
         builder: (context, snapshot) {
@@ -71,122 +69,129 @@ class _HomePageState extends State<HomePage> {
                 child: Text('No articles with images available.'));
           }
 
-          return ListView.builder(
-            padding: const EdgeInsets.all(10),
-            itemCount: articles.length,
-            itemBuilder: (context, index) {
-              final article = articles[index];
-              final isBookmarked = _bookmarkedArticles.contains(article.title);
+          return Consumer<BookmarkProvider>(
+            builder: (context, bookmarkProvider, child) {
+              return ListView.builder(
+                padding: const EdgeInsets.all(10),
+                itemCount: articles.length,
+                itemBuilder: (context, index) {
+                  final article = articles[index];
+                  final isBookmarked = bookmarkProvider.bookmarks
+                      .any((b) => b['title'] == article.title);
 
-              return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 3,
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                      borderRadius:
-                          const BorderRadius.vertical(top: Radius.circular(12)),
-                      child: Image.network(
-                        article.image!,
-                        width: double.infinity,
-                        height: 200,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset('assets/images/news.png',
-                              height: 200, fit: BoxFit.cover);
-                        },
-                      ),
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            article.title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(
-                                  fontFamily: "RosebayRegular",
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.color, // Ensure color is updated
-                                ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                    elevation: 3,
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(12)),
+                          child: Image.network(
+                            article.image!,
+                            width: double.infinity,
+                            height: 200,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset('assets/images/news.png',
+                                  height: 200, fit: BoxFit.cover);
+                            },
                           ),
-                          const SizedBox(height: 5),
-                          Text(
-                            article.description,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  fontSize: 14.0,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.color, // Ensure color is updated
-                                ),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "The Guardian",
+                                article.title,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodySmall
+                                    .titleLarge
                                     ?.copyWith(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
+                                      fontFamily: "RosebayRegular",
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.color,
                                     ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
+                              const SizedBox(height: 5),
+                              Text(
+                                article.description,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      fontSize: 14.0,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.color,
+                                    ),
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 10),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "${DateTime.parse(article.publishedDate).toLocal()}"
-                                        .split(' ')[0],
+                                    "The Guardian",
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall
                                         ?.copyWith(
                                           fontSize: 12,
-                                          color: Colors.grey,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                   ),
-                                  const SizedBox(width: 8),
-                                  GestureDetector(
-                                    onTap: () => _toggleBookmark(article),
-                                    child: Icon(
-                                      isBookmarked
-                                          ? Icons.bookmark
-                                          : Icons.bookmark_border,
-                                      color: isBookmarked
-                                          ? Colors.blue
-                                          : Colors.grey,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "${DateTime.parse(article.publishedDate).toLocal()}"
+                                            .split(' ')[0],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(
+                                              fontSize: 12,
+                                              color: Colors.grey,
+                                            ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      GestureDetector(
+                                        onTap: () => _toggleBookmark(article),
+                                        child: Icon(
+                                          isBookmarked
+                                              ? Icons.bookmark
+                                              : Icons.bookmark_border,
+                                          color: isBookmarked
+                                              ? Colors.blue
+                                              : Colors.grey,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               );
             },
           );
